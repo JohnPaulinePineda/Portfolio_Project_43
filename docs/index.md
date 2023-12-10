@@ -2,31 +2,44 @@
 # Unsupervised Learning : Discovering Global Patterns in Cancer Mortality Across Countries Via Clustering Analysis
 
 ***
-### John Pauline Pineda <br> <br> *December 11, 2023*
+### John Pauline Pineda <br> <br> *December 10, 2023*
 ***
 
 * [**1. Table of Contents**](#TOC)
-    * [1.1 Data Background](#1.1)
-    * [1.2 Data Description](#1.2)
-    * [1.3 Data Quality Assessment](#1.3)
-    * [1.4 Data Preprocessing](#1.4)
-        * [1.4.1 Data Cleaning](#1.4.1)
-        * [1.4.2 Outlier Treatment](#1.4.2)
-        * [1.4.3 Collinearity](#1.4.3)
-        * [1.4.4 Shape Transformation](#1.4.4)
-        * [1.4.5 Centering and Scaling](#1.4.5)
-        * [1.4.6 Preprocessed Data Description](#1.4.6)
-    * [1.5 Data Exploration](#1.5)
-        * [1.5.1 Exploratory Data Analysis](#1.5.1)
-        * [1.5.2 Hypothesis Testing](#1.5.2)
-    * [1.6 Model Development](#1.6)
-        * [1.6.1 Premodelling Data Description](#1.6.1)
-        * [1.6.2 K-Means Clustering](#1.6.2)
-        * [1.6.3 Bisecting K-Means Clustering](#1.6.3)
-        * [1.6.4 Gaussian Mixture Clustering](#1.6.4)
-        * [1.6.5 Agglomerative Clustering](#1.6.5)
-        * [1.6.6 Ward Hierarchical Clustering](#1.6.6)
-    * [1.7 Consolidated Findings](#1.7)   
+    * [1.1 Introduction](#1.1)
+        * [1.1.1 Study Objectives](#1.1.1)
+        * [1.1.2 Outcome](#1.1.2)
+        * [1.1.3 Descriptors](#1.1.3)
+    * [1.2 Methodology](#1.2)
+        * [1.2.1 Data Assessment](#1.2.1)
+        * [1.2.2 Feature Selection](#1.2.2)
+        * [1.2.3 Model Formulation](#1.2.3)
+        * [1.2.4 Model Hyperparameter Tuning](#1.2.4)
+        * [1.2.5 Model Performance Evaluation](#1.2.5)
+        * [1.2.6 Model Presentation](#1.2.6)
+    * [1.3 Results](#1.3)
+        * [1.3.1 Data Preparation](#1.3.1)
+        * [1.3.2 Data Quality Assessment](#1.3.2)
+        * [1.3.3 Data Preprocessing](#1.3.3)
+            * [1.3.3.1 Data Cleaning](#1.3.3.1)
+            * [1.3.3.2 Outlier Treatment](#1.3.3.2)
+            * [1.3.3.3 Collinearity](#1.3.3.3)
+            * [1.3.3.4 Shape Transformation](#1.3.3.4)
+            * [1.3.3.5 Centering and Scaling](#1.3.3.5)
+            * [1.3.3.6 Preprocessed Data Description](#1.3.3.6)
+        * [1.3.4 Data Exploration](#1.3.4)
+            * [1.3.4.1 Exploratory Data Analysis](#1.3.4.1)
+            * [1.3.4.2 Hypothesis Testing](#1.3.4.2)
+        * [1.3.5 Model Development](#1.3.5)
+            * [1.3.5.1 Premodelling Data Description](#1.3.5.1)
+            * [1.3.5.2 K-Means Clustering](#1.3.5.2)
+            * [1.3.5.3 Bisecting K-Means Clustering](#1.3.5.3)
+            * [1.3.5.4 Gaussian Mixture Clustering](#1.3.5.4)
+            * [1.3.5.5 Agglomerative Clustering](#1.3.5.5)
+            * [1.3.5.6 Ward Hierarchical Clustering](#1.3.5.6)
+        * [1.3.6 Model Selection](#1.3.6) 
+        * [1.3.7 Model Presentation](#1.3.7) 
+            * [1.3.7.1 Cluster Visualization Plots](#1.3.7.1)
 * [**2. Summary**](#Summary)   
 * [**3. References**](#References)
 
@@ -34,12 +47,9 @@
 
 # 1. Table of Contents <a class="anchor" id="TOC"></a>
 
-This project explores the various clustering algorithms for segmenting information using various helpful packages in <mark style="background-color: #CCECFF"><b>Python</b></mark>. Models applied in the analysis to cluster high dimensional data included the **K-Means**, **Bisecting K-Means**, **Gaussian Mixture**, **Agglomerative** and **Ward Hierarchical** clustering algorithms. The different clustering algorithms were evaluated using the silhouete coefficient which measures how well-separated the clusters are and how similar an object is to its own cluster (cohesion) compared to other clusters (separation). All results were consolidated in a [<span style="color: #FF0000"><b>Summary</b></span>](#Summary) presented at the end of the document.
+## 1.1 Introduction <a class="anchor" id="1.1"></a>
 
-[Cluster analysis](https://link.springer.com/book/10.1007/978-1-4614-6849-3?page=1) is a form of unsupervised learning method aimed at identifying similar structural patterns in an unlabeled data set by segmenting the observations into clusters with shared characteristics as compared to those in other clusters. The algorithms applied in this study attempt to formulate partitioned segments from the data set through the hierarchical (either agglomeratively when smaller clusters are merged into the larger clusters or divisively when larger clusters are divided into smaller clusters) and non-hierarchical (when each observation is placed in exactly one of the mutually exclusive clusters) methods.
-
-
-## 1.1. Data Background <a class="anchor" id="1.1"></a>
+Age-standardized cancer mortality rates refer to the number of deaths attributed to cancer within a specific population over a given period, usually expressed as the number of deaths per 100,000 people adjusted for differences in age distribution. Monitoring cancer mortality rates allows public health authorities to [track the burden of cancer](https://jamanetwork.com/journals/jamaoncology/fullarticle/2787350), [understand the prevalence of different cancer types](https://www.wcrf.org/differences-in-cancer-incidence-and-mortality-across-the-globe/) and [identify variations in different populations](https://ascopubs.org/doi/abs/10.1200/JCO.23.00864). Studying these metrics is essential for making accurate cross-country comparisons, identifying high-risk communities, informing public health policies, and supporting international efforts to address the global burden of cancer. 
 
 Datasets used for the analysis were separately gathered and consolidated from various sources including: 
 1. Cancer Deaths by Type from [OurWorldInData.Org](https://ourworldindata.org/cancer) as obtained from the [Institute for Health Metrics and Evaluation](http://ghdx.healthdata.org/gbd-results-tool)
@@ -49,11 +59,35 @@ Datasets used for the analysis were separately gathered and consolidated from va
 5. Geographic Coordinates from [Geodatos](https://www.geodatos.net/en/coordinates/)
 6. Global Map Shape File from [GeoJson-Maps](https://geojson-maps.ash.ms/)
 
-This study hypothesized that various death rates by major cancer types contain inherent patterns and structures within the data, enabling the grouping of similar countries and the differentiation of dissimilar ones.
+This study hypothesized that mortality rates by major cancer types contain inherent patterns and structures within the data, enabling the grouping of similar countries and the differentiation of dissimilar ones.
+
+Subsequent analysis and modelling steps involving data understanding, data preparation, data exploration, model development, model validation and model presentation were individually detailed below, with all the results consolidated in a [<span style="color: #FF0000"><b>Summary</b></span>](#Summary) provided at the end of the document. 
+
+### 1.1.1 Study Objectives <a class="anchor" id="1.1.1"></a>
+
+**The main objective of the study is to develop a clustering model with an optimal number of clusters that could recognize patterns and relationships among cancer mortality rates across countries, allowing for a deeper understanding of the inherent and underlying data structure when evaluated against supplementary information on lifestyle factors and geolocation.**
+
+Specific objectives are given as follows:
+
+* Obtain an optimal subset of observations and predictors by conducting data quality assessment and feature selection, excluding cases or variables noted with irregularities and applying preprocessing operations most suitable for the downstream analysis
+
+* Develop multiple clustering models with optimized hyperparameters in terms of the number of clusters through through internal resampling validation
+
+* Select the final clustering model among candidates based on its ability to quantify the compactness and separation of clusters
+
+* Interpret clusters based on inter-cluster patterns and intra-cluster dissimilarities 
+
+* Conduct a post-hoc exploration of the results to provide general insights on the relationship and association among and between the formulated clusters
+
+### 1.1.2 Outcome <a class="anchor" id="1.1.2"></a>
 
 Due to the unspervised learning nature of the analysis, there is no target variable defined for the study.
 
-The clustering descriptor variables for the study are:
+### 1.1.3 Descriptors <a class="anchor" id="1.1.2"></a>
+
+The clustering descriptors are the primary variables to be evaluated in formulating the clusters for segmenting the countries in the study. 
+
+Detailed descriptions for each individual clustering descriptor are provided as follows:
 * <span style="color: #FF0000">PROCAN</span> - Age-standardized prostate cancer death rates, per 100K population (2019)
 * <span style="color: #FF0000">BRECAN</span> - Age-standardized breast cancer death rates, per 100K population (2019)
 * <span style="color: #FF0000">CERCAN</span> - Age-standardized cervical cancer death rates, per 100K population (2019)
@@ -64,21 +98,79 @@ The clustering descriptor variables for the study are:
 * <span style="color: #FF0000">COLCAN</span> - Age-standardized colorectal cancer death rates, per 100K population (2019)
 * <span style="color: #FF0000">LIVCAN</span> - Age-standardized liver cancer death rates, per 100K population (2019)
 
-The target descriptor variables for the study are:
+The target descriptors are the secondary variables to where the formulated clusters will be compared with, providing additional context to the findings. 
+
+Detailed descriptions for each individual target descriptor are provided as follows:
 * <span style="color: #FF0000">SMPREV</span> - Daily smoking prevalence, proportion of the population for both sexes of all ages, % (2012)
 * <span style="color: #FF0000">OWPREV</span> - Age-standardized prevalence of overweight among adults, BMI<=25, % (2016)
 * <span style="color: #FF0000">ACSHAR</span> - Total alcohol consumption per capita, liters of pure alcohol, projected estimates, 15+ years of age (2018)
 
-The metadata variables for the study are:
+The metadata variables providing geolocation information for the study are:
 * <span style="color: #FF0000">COUNTRY</span> - Political unit with sovereignty (legitimate and total political power) over a territory and inhabitants within its borders
 * <span style="color: #FF0000">CODE</span> - Unique identifier that represents a geographic entity, by country
 * <span style="color: #FF0000">GEOLAT</span> - Latitude coordinates, by country
 * <span style="color: #FF0000">GEOLON</span> - Longitude coordinates, by country
 
+## 1.2 Methodology <a class="anchor" id="1.2"></a>
 
-## 1.2. Data Description <a class="anchor" id="1.2"></a>
 
-1. The dataset is comprised of:
+### 1.2.1 Data Assessment <a class="anchor" id="1.2.1"></a>
+
+Preliminary data used in the study was evaluated and prepared for analysis and modelling using the following methods:
+
+[Data Quality Assessment](http://appliedpredictivemodeling.com/) involves profiling and assessing the data to understand its suitability for machine learning tasks. The quality of training data has a huge impact on the efficiency, accuracy and complexity of machine learning tasks. Data remains susceptible to errors or irregularities that may be introduced during collection, aggregation or annotation stage. Issues such as incorrect labels, synonymous categories in a categorical variable or heterogeneity in columns, among others, which might go undetected by standard pre-processing modules in these frameworks can lead to sub-optimal model performance, inaccurate analysis and unreliable decisions.
+
+[Data Preprocessing](http://appliedpredictivemodeling.com/) involves changing the raw feature vectors into a representation that is more suitable for the downstream modelling and estimation processes, including data cleaning, integration, reduction and transformation. Data cleaning aims to identify and correct errors in the dataset that may negatively impact a predictive model such as removing outliers, replacing missing values, smoothing noisy data, and correcting inconsistent data. Data integration addresses potential issues with redundant and inconsistent data obtained from multiple sources through approaches such as detection of tuple duplication and data conflict. The purpose of data reduction is to have a condensed representation of the data set that is smaller in volume, while maintaining the integrity of the original data set. Data transformation converts the data into the most appropriate form for data modeling.
+
+[Data Exploration](http://appliedpredictivemodeling.com/) involves analyzing and investigating data sets to summarize their main characteristics, often employing data visualization methods. It helps determine how best to manipulate data sources to discover patterns, spot anomalies, test a hypothesis, or check assumptions. This process is primarily used to see what data can reveal beyond the formal modeling or hypothesis testing task and provides a better understanding of data set variables and the relationships between them.
+
+[Yeo-Johnson Transformation](https://academic.oup.com/biomet/article-abstract/87/4/954/232908?redirectedFrom=fulltext&login=false) applies a new family of distributions that can be used without restrictions, extending many of the good properties of the Box-Cox power family. Similar to the Box-Cox transformation, the method also estimates the optimal value of lambda but has the ability to transform both positive and negative values by inflating low variance data and deflating high variance data to create a more uniform data set. While there are no restrictions in terms of the applicable values, the interpretability of the transformed values is more diminished as compared to the other methods.
+
+### 1.2.2 Feature Selection <a class="anchor" id="1.2.2"></a>
+
+Statistical test measure assessed for the numeric descriptors in the study to determine the most optimal subset of variables for the subsequent modelling process included the following:
+
+[Pearson’s Correlation Coefficient](https://royalsocietypublishing.org/doi/10.1098/rsta.1896.0007) is a parametric measure of the linear correlation for a pair of features by calculating the ratio between their covariance and the product of their standard deviations. The presence of high absolute correlation values indicate the univariate association between the numeric predictors and the numeric response.
+
+### 1.2.3 Model Formulation <a class="anchor" id="1.2.3"></a>
+
+[Cluster Analysis](https://link.springer.com/book/10.1007/978-1-4614-6849-3?page=1) is a form of unsupervised learning method aimed at identifying similar structural patterns in an unlabeled data set by segmenting the observations into clusters with shared characteristics as compared to those in other clusters.
+
+This study implemented clustering algorithms which formulated partitioned segments from the data set through the hierarchical (either agglomeratively when smaller clusters are merged into the larger clusters or divisively when larger clusters are divided into smaller clusters) and non-hierarchical (when each observation is placed in exactly one of the mutually exclusive clusters) methods. Models applied in the analysis for clustering high-dimensional were the following:
+
+[K-Means Clustering](https://onlinelibrary.wiley.com/doi/book/10.1002/9780470316801) groups similar data points together into clusters by minimizing the mean distance between geometric points. The algorithm iteratively partitions data sets into a fixed number of non-overlapping k subgroups or clusters wherein each data point belongs to the cluster with the nearest mean cluster center. The process begins by initializing all the coordinates into a pre-defined k number of cluster centers. With every pass of the algorithm, each point is assigned to its nearest cluster center. The cluster centers are then updated to be the centers of all the points assigned to it in that pass. This is performed by re-calculating the cluster centers as the average of the points in each respective cluster. The algorithm repeats until there’s a minimum change of the cluster centers from the last iteration.
+
+[Bisecting K-Means Clustering](https://www.semanticscholar.org/paper/A-Comparison-of-Document-Clustering-Techniques-Steinbach-Karypis/9378a3797d5f815babe7b392a199ea9d8d4f1dcf) is a variant of the traditional K-Means algorithm which iteratively splits clusters into two parts until the desired number of clusters is reached. It is a hierarchical clustering approach that uses a divisive strategy to build a hierarchy of clusters. The algorithm starts with the entire dataset as the initial cluster. The standard K-Means algorithm is implemented to the selected cluster, splitting it into two sub-clusters. Both steps are repeated until the desired number of clusters is reached. In cases when there are multiple clusters present, the algorithm selects the cluster with the largest variance. This results in a hierarchical structure of clusters, and the process can be stopped at any desired level of granularity.
+
+[Gaussian Mixture Clustering](https://www.semanticscholar.org/paper/A-Comparison-of-Document-Clustering-Techniques-Steinbach-Karypis/9378a3797d5f815babe7b392a199ea9d8d4f1dcf) is a probabilistic model that assumes all the data points are generated from a mixture of a finite number of Gaussian distributions with unknown parameters incorporating information about the covariance structure of the data as well as the centers of the latent Gaussians. The algorithm involves initializing the parameters of the Gaussian components using K-means clustering to get initial estimates for the means and the identity matrix as a starting point for the covariance matrices. The expectation-maximization process is applied by calculating the probability of each data point belonging to each Gaussian component using the Bayes' theorem for the expectation step, and updating the parameters of the Gaussian components based on the weighted sum of the data points based on the probabilities determined for the maximization step. Convergence is checked by evaluating whether the log-likelihood of the data has stabilized or reached a maximum. Both steps are iterated until the criteria is met. After convergence, each data point is assigned to the cluster with the highest probability.
+
+[Agglomerative Clustering](https://link.springer.com/book/10.1007/978-981-19-0420-2) builds a hierarchy of clusters. In this algorithm, each data point starts as its own cluster, and the algorithm merges clusters iteratively until a stopping criterion is met. The algorithm starts with each data point as a singleton cluster with the number of initial clusters is equal to the number of data points. The pairwise distance matrix is calculated between all clusters using complete linkage determined as the maximum distance between any two points in the two clusters. The two clusters that have the minimum distance according to the linkage criterion are identified and merged in the next step. The distances between new clusters and all other clusters are recalculated. All previous steps are repeated until the desired number of clusters is reached or until a stopping criterion is met.
+
+[Ward Hierarchical Clustering](https://link.springer.com/book/10.1007/978-981-19-0420-2) creates compact, well-separated clusters by minimizing the variance within each cluster during the merging process. In this algorithm, each data point starts as its own cluster, and the algorithm merges clusters iteratively until a stopping criterion is met. The algorithm starts with each data point as a singleton cluster with the number of initial clusters is equal to the number of data points. The pairwise distance matrix is calculated between all clusters and used as a measure of dissimilarity. For each cluster, the within-cluster variance is computed which evaluates how tightly the data points within a cluster are grouped. The two clusters that, when merged, result in the smallest increase in the within-cluster variance are identified and merged in the next step. The within-cluster variance for the newly formed cluster  are recalculated and the pairwise distance matrix updated. All previous steps are repeated until the desired number of clusters is reached or until a stopping criterion is met.
+
+### 1.2.4 Model Hyperparameter Tuning <a class="anchor" id="1.2.4"></a>
+
+The optimal combination of hyperparameter values which maximized the performance of the various clustering models in the study used the following hyperparameter tuning strategy:
+
+[K-Fold Cross-Validation](http://appliedpredictivemodeling.com/) involves dividing the training set after a random shuffle into a user-defined K number of smaller non-overlapping sets called folds. Each unique fold is assigned as the hold-out test data to assess the model trained from the data set collected from all the remaining K-1 folds. The evaluation score is retained but the model is discarded. The process is recursively performed resulting to a total of K fitted models and evaluated on the K hold-out test sets. All K-computed performance measures reported from the process are then averaged to represent the estimated performance of the model. This approach can be computationally expensive and may be highly dependent on how the data was randomly assigned to their respective folds, but does not waste too much data which is a major advantage in problems where the number of samples is very small.
+
+### 1.2.5 Model Performance Evaluation <a class="anchor" id="1.2.5"></a>
+
+The segmentation performance of the formulated clustering models in the study were compared and evaluated using the following metrics:
+
+[Silhouette Score](https://www.packtpub.com/product/training-systems-using-python-statistical-modeling/9781838823733) assesses the quality of clusters created by a clustering algorithm. It measures how well-separated the clusters are and how similar each data point in a cluster is to the other points in the same cluster compared to the nearest neighboring cluster. The silhouette score ranges from -1 to 1, where a higher value indicates better-defined clusters. The silhouette method requires the computation of the silhouette scores for each data point which is the average dissimilarity of the data point with all other data points in the next-nearest cluster minus the average dissimilarity of the data point to points in the same cluster and divided by the larger of the two numbers. The overall silhouette score for the clustering is the average of the silhouette scores for all data points.
+
+### 1.2.6 Model Presentation <a class="anchor" id="1.2.6"></a>
+
+Model presentation was conducted post-hoc to interpret the formulated clusters based on segmentation patterns and obtain insights based on their  relationship and association. These methods were described as follows:
+
+[Cluster Visualization Plots](https://link.springer.com/book/10.1007/978-1-4614-6849-3?page=1) are graphical representations designed to provide insight into the structure, distribution, and characteristics of clusters formed by clustering algorithms including but not limited to pair plots, heat maps and geographic plots. Pair plots (scatterplot matrices) can be used to visualize relationships between pairs of features within clusters. They provide a comprehensive view of feature distributions and correlations within and between clusters. Heatmaps are useful for visualizing the distribution of features within clusters. They provide a color-coded representation of feature values across clusters, allowing users to identify patterns and differences in the feature profiles of clusters. Geographic maps divide the space into regions based on geolocation data including latitude and longitude. Each region is color-coded to a specific cluster, providing a spatial representation of cluster boundaries.
+
+## 1.3. Results <a class="anchor" id="1.3"></a>
+
+### 1.3.1. Data Preparation <a class="anchor" id="1.3.1"></a>
+
+1. The initial tabular dataset was comprised of 208 observations and 16 variables (including 4 metadata and 12 descriptors).
     * **208 rows** (observations)
     * **16 columns** (variables)
         * **2/16 metadata** (object)
@@ -133,6 +225,7 @@ from operator import add,mul,truediv
 from sklearn.preprocessing import PowerTransformer, StandardScaler
 from scipy import stats
 
+from sklearn.model_selection import KFold
 from sklearn.cluster import KMeans, AffinityPropagation, MeanShift, SpectralClustering, AgglomerativeClustering, Birch, BisectingKMeans
 from sklearn.mixture import GaussianMixture
 from sklearn.metrics import silhouette_score
@@ -633,7 +726,7 @@ else:
     No categorical columns identified from the data.
     
 
-## 1.3. Data Quality Assessment <a class="anchor" id="1.3"></a>
+### 1.3.2 Data Quality Assessment <a class="anchor" id="1.3.2"></a>
 
 Data quality findings based on assessment are as follows:
 1. No duplicated rows observed.
@@ -2393,10 +2486,10 @@ len(categorical_column_quality_summary[(categorical_column_quality_summary['Uniq
 
 
 
-## 1.4. Data Preprocessing <a class="anchor" id="1.4"></a>
+### 1.3.3. Data Preprocessing <a class="anchor" id="1.3.3"></a>
 
 
-### 1.4.1 Data Cleaning <a class="anchor" id="1.4.1"></a>
+#### 1.3.3.1 Data Cleaning <a class="anchor" id="1.3.3.1"></a>
 
 1. Subsets of rows with high rates of missing data were removed from the dataset:
     * 25 rows with Missing.Rate>0.0 were exluded for subsequent analysis.
@@ -2658,7 +2751,7 @@ display(cancer_death_rate_cleaned.shape)
     (183, 16)
 
 
-### 1.4.2 Outlier Detection <a class="anchor" id="1.4.2"></a>
+#### 1.3.3.2 Outlier Detection <a class="anchor" id="1.3.3.2"></a>
 
 1. High number of outliers observed for 2 numeric variables with Outlier.Ratio>0.10 and marginal to high Skewness.
     * <span style="color: #FF0000">ESOCAN</span>: Outlier.Count = 24, Outlier.Ratio = 0.131, Skewness=+2.092
@@ -2906,77 +2999,77 @@ for column in cancer_death_rate_cleaned_numeric:
 
 
     
-![png](output_105_0.png)
+![png](output_115_0.png)
     
 
 
 
     
-![png](output_105_1.png)
+![png](output_115_1.png)
     
 
 
 
     
-![png](output_105_2.png)
+![png](output_115_2.png)
     
 
 
 
     
-![png](output_105_3.png)
+![png](output_115_3.png)
     
 
 
 
     
-![png](output_105_4.png)
+![png](output_115_4.png)
     
 
 
 
     
-![png](output_105_5.png)
+![png](output_115_5.png)
     
 
 
 
     
-![png](output_105_6.png)
+![png](output_115_6.png)
     
 
 
 
     
-![png](output_105_7.png)
+![png](output_115_7.png)
     
 
 
 
     
-![png](output_105_8.png)
+![png](output_115_8.png)
     
 
 
 
     
-![png](output_105_9.png)
+![png](output_115_9.png)
     
 
 
 
     
-![png](output_105_10.png)
+![png](output_115_10.png)
     
 
 
 
     
-![png](output_105_11.png)
+![png](output_115_11.png)
     
 
 
-### 1.4.3 Collinearity <a class="anchor" id="1.4.3"></a>
+#### 1.3.3.3 Collinearity <a class="anchor" id="1.3.3.3"></a>
 
 1. Majority of the numeric variables reported moderate to high correlation which were statistically significant.
 2. Among pairwise combinations of numeric variables on cancer death rates, high Pearson.Correlation.Coefficient values were noted for:
@@ -3187,7 +3280,7 @@ plt.show()
 
 
     
-![png](output_110_0.png)
+![png](output_120_0.png)
     
 
 
@@ -3224,7 +3317,7 @@ plot_correlation_matrix(cancer_death_rate_cleaned_numeric_correlation,mask)
 
 
     
-![png](output_112_0.png)
+![png](output_122_0.png)
     
 
 
@@ -3244,7 +3337,7 @@ display(cancer_death_rate_cleaned_numeric.shape)
     (183, 12)
 
 
-### 1.4.4 Shape Transformation <a class="anchor" id="1.4.4"></a>
+#### 1.3.3.4 Shape Transformation <a class="anchor" id="1.3.3.4"></a>
 
 1. A Yeo-Johnson transformation was applied to all numeric variables to improve distributional shape.
 2. All variables achieved symmetrical distributions with minimal outliers after transformation.
@@ -3285,73 +3378,73 @@ for column in cancer_death_rate_transformed_numeric:
 
 
     
-![png](output_117_0.png)
+![png](output_127_0.png)
     
 
 
 
     
-![png](output_117_1.png)
+![png](output_127_1.png)
     
 
 
 
     
-![png](output_117_2.png)
+![png](output_127_2.png)
     
 
 
 
     
-![png](output_117_3.png)
+![png](output_127_3.png)
     
 
 
 
     
-![png](output_117_4.png)
+![png](output_127_4.png)
     
 
 
 
     
-![png](output_117_5.png)
+![png](output_127_5.png)
     
 
 
 
     
-![png](output_117_6.png)
+![png](output_127_6.png)
     
 
 
 
     
-![png](output_117_7.png)
+![png](output_127_7.png)
     
 
 
 
     
-![png](output_117_8.png)
+![png](output_127_8.png)
     
 
 
 
     
-![png](output_117_9.png)
+![png](output_127_9.png)
     
 
 
 
     
-![png](output_117_10.png)
+![png](output_127_10.png)
     
 
 
 
     
-![png](output_117_11.png)
+![png](output_127_11.png)
     
 
 
@@ -3584,7 +3677,7 @@ cancer_death_rate_transformed_numeric
 
 
 
-### 1.4.5 Centering and Scaling <a class="anchor" id="1.4.5"></a>
+#### 1.3.3.5 Centering and Scaling <a class="anchor" id="1.3.3.5"></a>
 
 1. All numeric variables were transformed using the standardization method to achieve a comparable scale between values.
 
@@ -3623,77 +3716,77 @@ for column in cancer_death_rate_scaled_numeric:
 
 
     
-![png](output_123_0.png)
+![png](output_133_0.png)
     
 
 
 
     
-![png](output_123_1.png)
+![png](output_133_1.png)
     
 
 
 
     
-![png](output_123_2.png)
+![png](output_133_2.png)
     
 
 
 
     
-![png](output_123_3.png)
+![png](output_133_3.png)
     
 
 
 
     
-![png](output_123_4.png)
+![png](output_133_4.png)
     
 
 
 
     
-![png](output_123_5.png)
+![png](output_133_5.png)
     
 
 
 
     
-![png](output_123_6.png)
+![png](output_133_6.png)
     
 
 
 
     
-![png](output_123_7.png)
+![png](output_133_7.png)
     
 
 
 
     
-![png](output_123_8.png)
+![png](output_133_8.png)
     
 
 
 
     
-![png](output_123_9.png)
+![png](output_133_9.png)
     
 
 
 
     
-![png](output_123_10.png)
+![png](output_133_10.png)
     
 
 
 
     
-![png](output_123_11.png)
+![png](output_133_11.png)
     
 
 
-### 1.4.6 Preprocessed Data Description <a class="anchor" id="1.4.6"></a>
+### 1.3.3.6 Preprocessed Data Description <a class="anchor" id="1.3.3.6"></a>
 
 1. The preprocessed dataset is comprised of:
     * **183 rows** (observations)
@@ -3745,9 +3838,9 @@ display(cancer_death_rate_preprocessed.shape)
     (183, 14)
 
 
-## 1.5. Data Exploration <a class="anchor" id="1.5"></a>
+### 1.3.4 Data Exploration <a class="anchor" id="1.3.4"></a>
 
-### 1.5.1 Exploratory Data Analysis <a class="anchor" id="1.5.1"></a>
+#### 1.3.4.1 Exploratory Data Analysis <a class="anchor" id="1.3.4.1"></a>
 
 1. Bivariate analysis identified individual descriptors with generally linear relationship to the target descriptor based on visual inspection.
 2. Linear relationships for the following descriptors and <span style="color: #FF0000">SMPREV</span> variables were observed: 
@@ -3830,7 +3923,7 @@ plt.show()
 
 
     
-![png](output_132_0.png)
+![png](output_142_0.png)
     
 
 
@@ -3891,7 +3984,7 @@ plt.show()
 
 
     
-![png](output_135_0.png)
+![png](output_145_0.png)
     
 
 
@@ -3952,11 +4045,11 @@ plt.show()
 
 
     
-![png](output_138_0.png)
+![png](output_148_0.png)
     
 
 
-### 1.5.2 Hypothesis Testing <a class="anchor" id="1.5.2"></a>
+#### 1.3.4.2 Hypothesis Testing <a class="anchor" id="1.3.4.2"></a>
 
 1. The relationship between the numeric descriptors to the <span style="color: #FF0000">SMPREV</span>, <span style="color: #FF0000">OWPREV</span> and <span style="color: #FF0000">ACSHAR</span> target descriptors were statistically evaluated using the following hypotheses:
     * **Null**: Pearson correlation coefficient is equal to zero 
@@ -4306,9 +4399,9 @@ display(cancer_death_rate_preprocessed_numeric_summary.sort_values(by=['Correlat
 </div>
 
 
-## 1.6. Model Development <a class="anchor" id="1.6"></a>
+## 1.3.5 Model Development <a class="anchor" id="1.3.5"></a>
 
-### 1.6.1 Premodelling Data Description <a class="anchor" id="1.6.1"></a>
+### 1.3.5.1 Premodelling Data Description <a class="anchor" id="1.3.5.1"></a>
 
 1. Among the 9 numeric descriptors, <span style="color: #FF0000">LIVCAN</span> and <span style="color: #FF0000">STOCAN</span> have not demonstrated a statistically significant linear relationship between the <span style="color: #FF0000">SMPREV</span>, <span style="color: #FF0000">OWPREV</span> nad , <span style="color: #FF0000">ACSHAR</span> target descriptors.
 2. All 9 numeric descriptors were however retained for the clustering analysis.
@@ -4505,7 +4598,7 @@ plt.show()
 
 
     
-![png](output_152_0.png)
+![png](output_162_0.png)
     
 
 
@@ -4617,11 +4710,7 @@ cancer_death_rate_premodelling_clustering.head()
 
 
 
-### 1.6.2 K-Means Clustering <a class="anchor" id="1.6.2"></a>
-
-[K-Means Clustering](https://onlinelibrary.wiley.com/doi/book/10.1002/9780470316801) groups similar data points together into clusters by minimizing the mean distance between geometric points. The algorithm iteratively partitions data sets into a fixed number of non-overlapping k subgroups or clusters wherein each data point belongs to the cluster with the nearest mean cluster center. The process begins by initializing all the coordinates into a pre-defined k number of cluster centers. With every pass of the algorithm, each point is assigned to its nearest cluster center. The cluster centers are then updated to be the centers of all the points assigned to it in that pass. This is performed by re-calculating the cluster centers as the average of the points in each respective cluster. The algorithm repeats until there’s a minimum change of the cluster centers from the last iteration.
-
-[Silhouette Score](https://www.packtpub.com/product/training-systems-using-python-statistical-modeling/9781838823733) assesses the quality of clusters created by a clustering algorithm. It measures how well-separated the clusters are and how similar each data point in a cluster is to the other points in the same cluster compared to the nearest neighboring cluster. The silhouette score ranges from -1 to 1, where a higher value indicates better-defined clusters. The silhouette method requires the computation of the silhouette scores for each data point which is the average dissimilarity of the data point with all other data points in the next-nearest cluster minus the average dissimilarity of the data point to points in the same cluster and divided by the larger of the two numbers. The overall silhouette score for the clustering is the average of the silhouette scores for all data points.
+### 1.3.5.2 K-Means Clustering <a class="anchor" id="1.3.5.2"></a>
 
 1. The [k-means clustering model](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html#sklearn.cluster.KMeans) from the <mark style="background-color: #CCECFF"><b>sklearn.cluster</b></mark> Python library API was implemented. 
 2. The model contains 3 hyperparameters:
@@ -4632,8 +4721,186 @@ cancer_death_rate_premodelling_clustering.head()
     * <span style="color: #FF0000">n_clusters</span> = 2
     * <span style="color: #FF0000">n_init</span> = auto
     * <span style="color: #FF0000">init</span> = k-means++
-5. The apparent model performance of the optimal model is summarized as follows:
+4. The 5-fold cross-validated model performance of the optimal model is summarized as follows:
+    * **Silhouette Score** = 0.2315
+5. To increase coverage for improved interpretability, the apparent model performance of the optimal model with 2 clusters was obtained as follows:
     * **Silhouette Score** = 0.2355
+
+
+
+```python
+##################################
+# Preparing the cross-validation data
+# and parameters to be evaluated
+# for the K-Means Clustering algorithm
+##################################
+X = cancer_death_rate_premodelling_clustering.copy()
+kmeans_kfold_cluster_list = range(2, 10)
+kmeans_kfold_cluster_silhouette_score = []
+```
+
+
+```python
+##################################
+# Conducting the 5-fold cross-validation
+# using the defined parameters
+# for the K-Means Clustering algorithm
+# for each individual cluster count
+##################################
+for k in kmeans_kfold_cluster_list:
+    ##################################
+    # Defining the hyperparameters
+    ##################################
+    km = KMeans(n_clusters=k, 
+                random_state=88888888, 
+                n_init='auto', 
+                init='k-means++')
+    ##################################
+    # Defining the 5-fold groups
+    ##################################
+    kfold = KFold(n_splits=5, 
+                  shuffle=True, 
+                  random_state=88888888)
+    scores = []
+
+    for train_index, test_index in kfold.split(X):
+        ##################################
+        # Formulating 5-fold groups
+        ##################################
+        X_train, X_test = X.iloc[train_index], X.iloc[test_index]
+        ##################################
+        # Fitting the K-Means Clustering algorithm
+        # on the train data
+        ##################################
+        km.fit(X_train)
+        ##################################
+        # Assigning clusters for the test data
+        ##################################
+        labels = km.predict(X_test)
+        ##################################
+        # Computing for the silhouette score
+        # on the test data
+        ##################################
+        score = silhouette_score(X_test, labels)
+        scores.append(score)
+
+    ##################################
+    # Calculating the average silhouette score
+    # for the given cluster count
+    ##################################
+    average_score = np.mean(scores)
+    kmeans_kfold_cluster_silhouette_score.append(average_score)
+```
+
+
+```python
+##################################
+# Consolidating the model performance metrics
+# for the K-Means Clustering algorithm
+# using a range of K values
+##################################
+kmeans_clustering_kfold_summary = pd.DataFrame(zip(kmeans_kfold_cluster_list,
+                                                   kmeans_kfold_cluster_silhouette_score),
+                                               columns=['KMeans.KFold.Cluster.Count',
+                                                        'KMeans.KFold.Cluster.Average.Silhouette.Score'])
+kmeans_clustering_kfold_summary
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>KMeans.KFold.Cluster.Count</th>
+      <th>KMeans.KFold.Cluster.Average.Silhouette.Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2</td>
+      <td>0.2315</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>3</td>
+      <td>0.2268</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>4</td>
+      <td>0.1674</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>5</td>
+      <td>0.1419</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>6</td>
+      <td>0.1475</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>7</td>
+      <td>0.1410</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>8</td>
+      <td>0.0957</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>9</td>
+      <td>0.0862</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+###################################
+# Plotting the Average Silhouette Score performance
+# by cluster count using the 5-fold results
+# for the K-Means Clustering algorithm
+##################################
+kmeans_kfold_cluster_count_values = np.array(kmeans_clustering_kfold_summary['KMeans.KFold.Cluster.Count'].values)
+kmeans_kfold_silhouette_score_values = np.array(kmeans_clustering_kfold_summary['KMeans.KFold.Cluster.Average.Silhouette.Score'].values)
+plt.figure(figsize=(10, 6))
+plt.plot(kmeans_kfold_cluster_count_values, kmeans_kfold_silhouette_score_values, marker='o',ls='-')
+plt.grid(True)
+plt.ylim(0,1)
+plt.title("K-Means Clustering Algorithm: Cluster Count by Cross-Validated Silhouette Score")
+plt.xlabel("Cluster")
+plt.ylabel("Average Silhouette Score")
+plt.show()
+```
+
+
+    
+![png](output_168_0.png)
+    
 
 
 
@@ -4641,6 +4908,7 @@ cancer_death_rate_premodelling_clustering.head()
 ##################################
 # Fitting the K-Means Clustering algorithm
 # using a range of K values
+# for the complete dataset
 ##################################
 kmeans_cluster_list = list()
 kmeans_cluster_inertia = list()
@@ -4664,6 +4932,7 @@ for cluster_count in range(2,10):
 # Consolidating the model performance metrics
 # for the K-Means Clustering algorithm
 # using a range of K values
+# for the complete dataset
 ##################################
 kmeans_clustering_evaluation_summary = pd.DataFrame(zip(kmeans_cluster_list,
                                                         kmeans_cluster_inertia,
@@ -4761,6 +5030,7 @@ kmeans_clustering_evaluation_summary
 # Plotting the Inertia performance
 # by cluster count using a range of K values
 # for the K-Means Clustering algorithm
+# for the complete dataset
 ##################################
 kmeans_cluster_count_values = np.array(kmeans_clustering_evaluation_summary['KMeans.Cluster.Count'].values)
 kmeans_inertia_values = np.array(kmeans_clustering_evaluation_summary['KMeans.Cluster.Inertia'].values)
@@ -4776,7 +5046,7 @@ plt.show()
 
 
     
-![png](output_157_0.png)
+![png](output_171_0.png)
     
 
 
@@ -4786,6 +5056,7 @@ plt.show()
 # Plotting the Silhouette Score performance
 # by cluster count using a range of K values
 # for the K-Means Clustering algorithm
+# for the complete dataset
 ##################################
 kmeans_cluster_count_values = np.array(kmeans_clustering_evaluation_summary['KMeans.Cluster.Count'].values)
 kmeans_silhouette_score_values = np.array(kmeans_clustering_evaluation_summary['KMeans.Cluster.Silhouette.Score'].values)
@@ -4801,7 +5072,7 @@ plt.show()
 
 
     
-![png](output_158_0.png)
+![png](output_172_0.png)
     
 
 
@@ -4962,7 +5233,7 @@ plt.show()
 
 
     
-![png](output_161_0.png)
+![png](output_175_0.png)
     
 
 
@@ -4983,15 +5254,11 @@ plt.show()
 
 
     
-![png](output_162_0.png)
+![png](output_176_0.png)
     
 
 
-### 1.6.3 Bisecting K-Means Clustering <a class="anchor" id="1.6.3"></a>
-
-[Bisecting K-Means Clustering](https://www.semanticscholar.org/paper/A-Comparison-of-Document-Clustering-Techniques-Steinbach-Karypis/9378a3797d5f815babe7b392a199ea9d8d4f1dcf) is a variant of the traditional K-Means algorithm which iteratively splits clusters into two parts until the desired number of clusters is reached. It is a hierarchical clustering approach that uses a divisive strategy to build a hierarchy of clusters. The algorithm starts with the entire dataset as the initial cluster. The standard K-Means algorithm is implemented to the selected cluster, splitting it into two sub-clusters. Both steps are repeated until the desired number of clusters is reached. In cases when there are multiple clusters present, the algorithm selects the cluster with the largest variance. This results in a hierarchical structure of clusters, and the process can be stopped at any desired level of granularity.
-
-[Silhouette Score](https://www.packtpub.com/product/training-systems-using-python-statistical-modeling/9781838823733) assesses the quality of clusters created by a clustering algorithm. It measures how well-separated the clusters are and how similar each data point in a cluster is to the other points in the same cluster compared to the nearest neighboring cluster. The silhouette score ranges from -1 to 1, where a higher value indicates better-defined clusters. The silhouette method requires the computation of the silhouette scores for each data point which is the average dissimilarity of the data point with all other data points in the next-nearest cluster minus the average dissimilarity of the data point to points in the same cluster and divided by the larger of the two numbers. The overall silhouette score for the clustering is the average of the silhouette scores for all data points.
+### 1.3.5.3 Bisecting K-Means Clustering <a class="anchor" id="1.3.5.3"></a>
 
 1. The [bisecting k-means clustering model](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.BisectingKMeans.html#sklearn.cluster.BisectingKMeans) from the <mark style="background-color: #CCECFF"><b>sklearn.cluster</b></mark> Python library API was implemented. 
 2. The model contains 3 hyperparameters:
@@ -5002,15 +5269,194 @@ plt.show()
     * <span style="color: #FF0000">n_clusters</span> = 2
     * <span style="color: #FF0000">n_init</span> = 1
     * <span style="color: #FF0000">init</span> = k-means++
-5. The apparent model performance of the optimal model is summarized as follows:
+4. The 5-fold cross-validated model performance of the optimal model is summarized as follows:
+    * **Silhouette Score** = 0.2315
+5. To increase coverage for improved interpretability, the apparent model performance of the optimal model with 2 clusters was obtained as follows:
     * **Silhouette Score** = 0.2355
     
 
 
 ```python
 ##################################
+# Preparing the cross-validation data
+# and parameters to be evaluated
+# for the K-Means Clustering algorithm
+##################################
+X = cancer_death_rate_premodelling_clustering.copy()
+bisecting_kmeans_kfold_cluster_list = range(2, 10)
+bisecting_kmeans_kfold_cluster_silhouette_score = []
+```
+
+
+```python
+##################################
+# Conducting the 5-fold cross-validation
+# using the defined parameters
+# for the Bisecting K-Means Clustering algorithm
+# for each individual cluster count
+##################################
+for k in bisecting_kmeans_kfold_cluster_list:
+    ##################################
+    # Defining the hyperparameters
+    ##################################
+    bk = BisectingKMeans(n_clusters=k, 
+                         random_state=88888888,
+                         n_init=1,
+                         init='k-means++')
+    ##################################
+    # Defining the 5-fold groups
+    ##################################
+    kfold = KFold(n_splits=5, 
+                  shuffle=True, 
+                  random_state=88888888)
+    scores = []
+
+    for train_index, test_index in kfold.split(X):
+        ##################################
+        # Formulating 5-fold groups
+        ##################################
+        X_train, X_test = X.iloc[train_index], X.iloc[test_index]
+        ##################################
+        # Fitting the Bisecting K-Means Clustering algorithm
+        # on the train data
+        ##################################
+        bk.fit(X_train)
+        ##################################
+        # Assigning clusters for the test data
+        ##################################
+        labels = bk.predict(X_test)
+        ##################################
+        # Computing for the silhouette score
+        # on the test data
+        ##################################
+        score = silhouette_score(X_test, labels)
+        scores.append(score)
+
+    ##################################
+    # Calculating the average silhouette score
+    # for the given cluster count
+    ##################################
+    average_score = np.mean(scores)
+    bisecting_kmeans_kfold_cluster_silhouette_score.append(average_score)
+```
+
+
+```python
+##################################
+# Consolidating the model performance metrics
+# for the Bisecting K-Means Clustering algorithm
+# using a range of K values
+##################################
+bisecting_kmeans_clustering_kfold_summary = pd.DataFrame(zip(bisecting_kmeans_kfold_cluster_list,
+                                                             bisecting_kmeans_kfold_cluster_silhouette_score),
+                                               columns=['Bisecting.KMeans.KFold.Cluster.Count',
+                                                        'Bisecting.KMeans.KFold.Cluster.Average.Silhouette.Score'])
+bisecting_kmeans_clustering_kfold_summary
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Bisecting.KMeans.KFold.Cluster.Count</th>
+      <th>Bisecting.KMeans.KFold.Cluster.Average.Silhouette.Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2</td>
+      <td>0.2315</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>3</td>
+      <td>0.1953</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>4</td>
+      <td>0.1669</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>5</td>
+      <td>0.1375</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>6</td>
+      <td>0.1250</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>7</td>
+      <td>0.1161</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>8</td>
+      <td>0.1100</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>9</td>
+      <td>0.1053</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+###################################
+# Plotting the Average Silhouette Score performance
+# by cluster count using the 5-fold results
+# for the Bisecting K-Means Clustering algorithm
+##################################
+bisecting_kmeans_kfold_cluster_count_values = np.array(bisecting_kmeans_clustering_kfold_summary['Bisecting.KMeans.KFold.Cluster.Count'].values)
+bisecting_kmeans_kfold_silhouette_score_values = np.array(bisecting_kmeans_clustering_kfold_summary['Bisecting.KMeans.KFold.Cluster.Average.Silhouette.Score'].values)
+plt.figure(figsize=(10, 6))
+plt.plot(bisecting_kmeans_kfold_cluster_count_values, bisecting_kmeans_kfold_silhouette_score_values, marker='o',ls='-')
+plt.grid(True)
+plt.ylim(0,1)
+plt.title("Bisecting K-Means Clustering Algorithm: Cluster Count by Cross-Validated Silhouette Score")
+plt.xlabel("Cluster")
+plt.ylabel("Average Silhouette Score")
+plt.show()
+```
+
+
+    
+![png](output_181_0.png)
+    
+
+
+
+```python
+##################################
 # Fitting the Bisecting K-Means Clustering algorithm
 # using a range of K values
+# for the complete dataset
 ##################################
 bisecting_kmeans_cluster_list = list()
 bisecting_kmeans_cluster_inertia = list()
@@ -5034,6 +5480,7 @@ for cluster_count in range(2,10):
 # Consolidating the model performance metrics
 # for the Bisecting K-Means Clustering algorithm
 # using a range of K values
+# for the complete dataset
 ##################################
 bisecting_kmeans_clustering_evaluation_summary = pd.DataFrame(zip(bisecting_kmeans_cluster_list,
                                                                   bisecting_kmeans_cluster_inertia,
@@ -5131,6 +5578,7 @@ bisecting_kmeans_clustering_evaluation_summary
 # Plotting the Inertia performance
 # by cluster count using a range of K values
 # for the Bisecting K-Means Clustering algorithm
+# for the complete dataset
 ##################################
 bisecting_kmeans_cluster_count_values = np.array(bisecting_kmeans_clustering_evaluation_summary['Bisecting.KMeans.Cluster.Count'].values)
 bisecting_kmeans_inertia_values = np.array(bisecting_kmeans_clustering_evaluation_summary['Bisecting.KMeans.Cluster.Inertia'].values)
@@ -5146,7 +5594,7 @@ plt.show()
 
 
     
-![png](output_166_0.png)
+![png](output_184_0.png)
     
 
 
@@ -5156,6 +5604,7 @@ plt.show()
 # Plotting the Silhouette Score performance
 # by cluster count using a range of K values
 # for the Bisecting K-Means Clustering algorithm
+# for the complete dataset
 ##################################
 bisecting_kmeans_cluster_count_values = np.array(bisecting_kmeans_clustering_evaluation_summary['Bisecting.KMeans.Cluster.Count'].values)
 bisecting_kmeans_silhouette_score_values = np.array(bisecting_kmeans_clustering_evaluation_summary['Bisecting.KMeans.Cluster.Silhouette.Score'].values)
@@ -5171,7 +5620,7 @@ plt.show()
 
 
     
-![png](output_167_0.png)
+![png](output_185_0.png)
     
 
 
@@ -5332,7 +5781,7 @@ plt.show()
 
 
     
-![png](output_170_0.png)
+![png](output_188_0.png)
     
 
 
@@ -5353,15 +5802,11 @@ plt.show()
 
 
     
-![png](output_171_0.png)
+![png](output_189_0.png)
     
 
 
-### 1.6.4 Gaussian Mixture Clustering <a class="anchor" id="1.6.4"></a>
-
-[Gaussian Mixture Clustering](https://www.semanticscholar.org/paper/A-Comparison-of-Document-Clustering-Techniques-Steinbach-Karypis/9378a3797d5f815babe7b392a199ea9d8d4f1dcf) is a probabilistic model that assumes all the data points are generated from a mixture of a finite number of Gaussian distributions with unknown parameters incorporating information about the covariance structure of the data as well as the centers of the latent Gaussians. The algorithm involves initializing the parameters of the Gaussian components using K-means clustering to get initial estimates for the means and the identity matrix as a starting point for the covariance matrices. The expectation-maximization process is applied by calculating the probability of each data point belonging to each Gaussian component using the Bayes' theorem for the expectation step, and updating the parameters of the Gaussian components based on the weighted sum of the data points based on the probabilities determined for the maximization step. Convergence is checked by evaluating whether the log-likelihood of the data has stabilized or reached a maximum. Both steps are iterated until the criteria is met. After convergence, each data point is assigned to the cluster with the highest probability.
-
-[Silhouette Score](https://www.packtpub.com/product/training-systems-using-python-statistical-modeling/9781838823733) assesses the quality of clusters created by a clustering algorithm. It measures how well-separated the clusters are and how similar each data point in a cluster is to the other points in the same cluster compared to the nearest neighboring cluster. The silhouette score ranges from -1 to 1, where a higher value indicates better-defined clusters. The silhouette method requires the computation of the silhouette scores for each data point which is the average dissimilarity of the data point with all other data points in the next-nearest cluster minus the average dissimilarity of the data point to points in the same cluster and divided by the larger of the two numbers. The overall silhouette score for the clustering is the average of the silhouette scores for all data points.
+### 1.3.5.4 Gaussian Mixture Clustering <a class="anchor" id="1.3.5.4"></a>
 
 1. The [gaussian mixture clustering model](https://scikit-learn.org/stable/modules/generated/sklearn.mixture.GaussianMixture.html#sklearn.mixture.GaussianMixture) from the <mark style="background-color: #CCECFF"><b>sklearn.mixture</b></mark> Python library API was implemented. 
 2. The model contains 4 hyperparameters:
@@ -5374,15 +5819,195 @@ plt.show()
     * <span style="color: #FF0000">covariance_type</span> = full
     * <span style="color: #FF0000">init_params</span> = k-means++
     * <span style="color: #FF0000">tol</span> = 1e-3
-4. The apparent model performance of the optimal model is summarized as follows:
+4. The 5-fold cross-validated model performance of the optimal model is summarized as follows:
+    * **Silhouette Score** = 0.1289
+5. To increase coverage for improved interpretability, the apparent model performance of the optimal model with 2 clusters was obtained as follows:
     * **Silhouette Score** = 0.2239
     
 
 
 ```python
 ##################################
+# Preparing the cross-validation data
+# and parameters to be evaluated
+# for the GMM Clustering algorithm
+##################################
+X = cancer_death_rate_premodelling_clustering.copy()
+gaussian_mixture_kfold_cluster_list = range(2, 10)
+gaussian_mixture_kfold_cluster_silhouette_score = []
+```
+
+
+```python
+##################################
+# Conducting the 5-fold cross-validation
+# using the defined parameters
+# for the GMM Clustering algorithm
+# for each individual cluster count
+##################################
+for k in gaussian_mixture_kfold_cluster_list:
+    ##################################
+    # Defining the hyperparameters
+    ##################################
+    gm = GaussianMixture(n_components=k,
+                         init_params='k-means++',
+                         covariance_type='full',
+                         tol = 1e-3,
+                         random_state=88888888)
+    ##################################
+    # Defining the 5-fold groups
+    ##################################
+    kfold = KFold(n_splits=5, 
+                  shuffle=True, 
+                  random_state=88888888)
+    scores = []
+
+    for train_index, test_index in kfold.split(X):
+        ##################################
+        # Formulating 5-fold groups
+        ##################################
+        X_train, X_test = X.iloc[train_index], X.iloc[test_index]
+        ##################################
+        # Fitting the GMM Clustering algorithm
+        # on the train data
+        ##################################
+        gm.fit(X_train)
+        ##################################
+        # Assigning clusters for the test data
+        ##################################
+        labels = gm.predict(X_test)
+        ##################################
+        # Computing for the silhouette score
+        # on the test data
+        ##################################
+        score = silhouette_score(X_test, labels)
+        scores.append(score)
+
+    ##################################
+    # Calculating the average silhouette score
+    # for the given cluster count
+    ##################################
+    average_score = np.mean(scores)
+    gaussian_mixture_kfold_cluster_silhouette_score.append(average_score)
+```
+
+
+```python
+##################################
+# Consolidating the model performance metrics
+# for the GMM Clustering algorithm
+# using a range of K values
+##################################
+gaussian_mixture_clustering_kfold_summary = pd.DataFrame(zip(gaussian_mixture_kfold_cluster_list,
+                                                             gaussian_mixture_kfold_cluster_silhouette_score),
+                                                         columns=['GMM.KFold.Cluster.Count',
+                                                                  'GMM.KFold.Cluster.Average.Silhouette.Score'])
+gaussian_mixture_clustering_kfold_summary
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>GMM.KFold.Cluster.Count</th>
+      <th>GMM.KFold.Cluster.Average.Silhouette.Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2</td>
+      <td>0.1289</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>3</td>
+      <td>0.0730</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>4</td>
+      <td>0.0814</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>5</td>
+      <td>0.0451</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>6</td>
+      <td>0.0644</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>7</td>
+      <td>0.0631</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>8</td>
+      <td>0.0353</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>9</td>
+      <td>0.0144</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+###################################
+# Plotting the Average Silhouette Score performance
+# by cluster count using the 5-fold results
+# for the GMM Clustering algorithm
+##################################
+gaussian_mixture_kfold_cluster_count_values = np.array(gaussian_mixture_clustering_kfold_summary['GMM.KFold.Cluster.Count'].values)
+gaussian_mixture_kfold_silhouette_score_values = np.array(gaussian_mixture_clustering_kfold_summary['GMM.KFold.Cluster.Average.Silhouette.Score'].values)
+plt.figure(figsize=(10, 6))
+plt.plot(gaussian_mixture_kfold_cluster_count_values, gaussian_mixture_kfold_silhouette_score_values, marker='o',ls='-')
+plt.grid(True)
+plt.ylim(0,1)
+plt.title("GMM Clustering Algorithm: Cluster Count by Cross-Validated Silhouette Score")
+plt.xlabel("Cluster")
+plt.ylabel("Average Silhouette Score")
+plt.show()
+```
+
+
+    
+![png](output_194_0.png)
+    
+
+
+
+```python
+##################################
 # Fitting the GMM Clustering algorithm
 # using a range of K values
+# for the complete dataset
 ##################################
 gaussian_mixture_cluster_list = list()
 gaussian_mixture_cluster_silhouette_score = list()
@@ -5405,6 +6030,7 @@ for cluster_count in range(2,10):
 # Consolidating the model performance metrics
 # for the GMM Clustering algorithm
 # using a range of K values
+# for the complete dataset
 ##################################
 gaussian_mixture_clustering_evaluation_summary = pd.DataFrame(zip(gaussian_mixture_cluster_list,
                                                                   gaussian_mixture_cluster_silhouette_score), 
@@ -5491,6 +6117,7 @@ gaussian_mixture_clustering_evaluation_summary
 # Plotting the Silhouette Score performance
 # by cluster count using a range of K values
 # for the GMM Clustering algorithm
+# for the complete dataset
 ##################################
 gaussian_mixture_cluster_count_values = np.array(gaussian_mixture_clustering_evaluation_summary['GMM.Cluster.Count'].values)
 gaussian_mixture_silhouette_score_values = np.array(gaussian_mixture_clustering_evaluation_summary['GMM.Cluster.Silhouette.Score'].values)
@@ -5506,7 +6133,7 @@ plt.show()
 
 
     
-![png](output_175_0.png)
+![png](output_197_0.png)
     
 
 
@@ -5665,7 +6292,7 @@ plt.show()
 
 
     
-![png](output_178_0.png)
+![png](output_200_0.png)
     
 
 
@@ -5686,32 +6313,205 @@ plt.show()
 
 
     
-![png](output_179_0.png)
+![png](output_201_0.png)
     
 
 
-### 1.6.5 Agglomerative Clustering <a class="anchor" id="1.6.5"></a>
-
-[Agglomerative Clustering](https://link.springer.com/book/10.1007/978-981-19-0420-2) builds a hierarchy of clusters. In this algorithm, each data point starts as its own cluster, and the algorithm merges clusters iteratively until a stopping criterion is met. The algorithm starts with each data point as a singleton cluster with the number of initial clusters is equal to the number of data points. The pairwise distance matrix is calculated between all clusters using complete linkage determined as the maximum distance between any two points in the two clusters. The two clusters that have the minimum distance according to the linkage criterion are identified and merged in the next step. The distances between new clusters and all other clusters are recalculated. All previous steps are repeated until the desired number of clusters is reached or until a stopping criterion is met.
-
-[Silhouette Score](https://www.packtpub.com/product/training-systems-using-python-statistical-modeling/9781838823733) assesses the quality of clusters created by a clustering algorithm. It measures how well-separated the clusters are and how similar each data point in a cluster is to the other points in the same cluster compared to the nearest neighboring cluster. The silhouette score ranges from -1 to 1, where a higher value indicates better-defined clusters. The silhouette method requires the computation of the silhouette scores for each data point which is the average dissimilarity of the data point with all other data points in the next-nearest cluster minus the average dissimilarity of the data point to points in the same cluster and divided by the larger of the two numbers. The overall silhouette score for the clustering is the average of the silhouette scores for all data points.
+### 1.3.5.5 Agglomerative Clustering <a class="anchor" id="1.3.5.5"></a>
 
 1. The [agglomerative clustering model](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AgglomerativeClustering.html#sklearn.cluster.AgglomerativeClustering) from the <mark style="background-color: #CCECFF"><b>sklearn.cluster</b></mark> Python library API was implemented. 
 2. The model contains 2 hyperparameters:
     * <span style="color: #FF0000">n_cluster</span> = number of clusters to find made to vary between 2 to 9
     * <span style="color: #FF0000">linkage</span> = linkage criterion used to determine which distance to use between sets of observation held constant at a value equal to full (minimizes the maximum distance between observations of pairs of clusters)
 3. Hyperparameter tuning was conducted on the data with optimal model performance using the silhouette score determined for: 
-    * <span style="color: #FF0000">n_cluster</span> = 2
-    * <span style="color: #FF0000">linkage</span> = full
-4. The apparent model performance of the optimal model is summarized as follows:
+    * <span style="color: #FF0000">n_cluster</span> = 5
+    * <span style="color: #FF0000">linkage</span> = full   
+4. The 5-fold cross-validated model performance of the optimal model is summarized as follows:
+    * **Silhouette Score** = 0.2339
+5. To increase coverage for improved interpretability, the apparent model performance of the optimal model with 2 clusters was obtained as follows:
     * **Silhouette Score** = 0.1629
     
 
 
 ```python
 ##################################
+# Preparing the cross-validation data
+# and parameters to be evaluated
+# for the Agglomerative Clustering algorithm
+##################################
+X = cancer_death_rate_premodelling_clustering.copy()
+agglomerative_kfold_cluster_list = range(2, 10)
+agglomerative_kfold_cluster_silhouette_score = []
+```
+
+
+```python
+##################################
+# Conducting the 5-fold cross-validation
+# using the defined parameters
+# for the Agglomerative Clustering algorithm
+# for each individual cluster count
+##################################
+for k in agglomerative_kfold_cluster_list:
+    ##################################
+    # Defining the hyperparameters
+    ##################################
+    ag = AgglomerativeClustering(n_clusters=k, 
+                                 linkage='complete')
+    ##################################
+    # Defining the 5-fold groups
+    ##################################
+    kfold = KFold(n_splits=5, 
+                  shuffle=True, 
+                  random_state=88888888)
+    scores = []
+
+    for train_index, test_index in kfold.split(X):
+        ##################################
+        # Formulating 5-fold groups
+        ##################################
+        X_train, X_test = X.iloc[train_index], X.iloc[test_index]
+        ##################################
+        # Fitting the Agglomerative Clustering algorithm
+        # on the train data
+        ##################################
+        ag.fit(X_train)
+        ##################################
+        # Assigning clusters for the test data
+        ##################################
+        labels = ag.fit_predict(X_test)
+        ##################################
+        # Computing for the silhouette score
+        # on the test data
+        ##################################
+        score = silhouette_score(X_test, labels)
+        scores.append(score)
+
+    ##################################
+    # Calculating the average silhouette score
+    # for the given cluster count
+    ##################################
+    average_score = np.mean(scores)
+    agglomerative_kfold_cluster_silhouette_score.append(average_score)
+```
+
+
+```python
+##################################
+# Consolidating the model performance metrics
+# for the Agglomerative Clustering algorithm
+# using a range of K values
+##################################
+agglomerative_clustering_kfold_summary = pd.DataFrame(zip(agglomerative_kfold_cluster_list,
+                                                          agglomerative_kfold_cluster_silhouette_score),
+                                                      columns=['Agglomerative.KFold.Cluster.Count',
+                                                               'Agglomerative.KFold.Cluster.Average.Silhouette.Score'])
+agglomerative_clustering_kfold_summary
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Agglomerative.KFold.Cluster.Count</th>
+      <th>Agglomerative.KFold.Cluster.Average.Silhouette.Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2</td>
+      <td>0.2232</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>3</td>
+      <td>0.2336</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>4</td>
+      <td>0.2285</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>5</td>
+      <td>0.2339</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>6</td>
+      <td>0.2256</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>7</td>
+      <td>0.2083</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>8</td>
+      <td>0.2231</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>9</td>
+      <td>0.2217</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+###################################
+# Plotting the Average Silhouette Score performance
+# by cluster count using the 5-fold results
+# for the Agglomerative Clustering algorithm
+##################################
+agglomerative_kfold_cluster_count_values = np.array(agglomerative_clustering_kfold_summary['Agglomerative.KFold.Cluster.Count'].values)
+agglomerative_kfold_silhouette_score_values = np.array(agglomerative_clustering_kfold_summary['Agglomerative.KFold.Cluster.Average.Silhouette.Score'].values)
+plt.figure(figsize=(10, 6))
+plt.plot(agglomerative_kfold_cluster_count_values, agglomerative_kfold_silhouette_score_values, marker='o',ls='-')
+plt.grid(True)
+plt.ylim(0,1)
+plt.title("Agglomerative Clustering Algorithm: Cluster Count by Cross-Validated Silhouette Score")
+plt.xlabel("Cluster")
+plt.ylabel("Average Silhouette Score")
+plt.show()
+```
+
+
+    
+![png](output_206_0.png)
+    
+
+
+
+```python
+##################################
 # Fitting the Agglomerative Clustering algorithm
 # using a range of K values
+# for the complete dataset
 ##################################
 agglomerative_cluster_list = list()
 agglomerative_cluster_silhouette_score = list()
@@ -5731,6 +6531,7 @@ for cluster_count in range(2,10):
 # Consolidating the model performance metrics
 # for the Agglomerative Clustering algorithm
 # using a range of K values
+# for the complete dataset
 ##################################
 agglomerative_clustering_evaluation_summary = pd.DataFrame(zip(agglomerative_cluster_list,
                                                                agglomerative_cluster_silhouette_score), 
@@ -5817,6 +6618,7 @@ agglomerative_clustering_evaluation_summary
 # Plotting the Silhouette Score performance
 # by cluster count using a range of K values
 # for the Agglomerative Clustering algorithm
+# for the complete dataset
 ##################################
 agglomerative_cluster_count_values = np.array(agglomerative_clustering_evaluation_summary['Agglomerative.Cluster.Count'].values)
 agglomerative_silhouette_score_values = np.array(agglomerative_clustering_evaluation_summary['Agglomerative.Cluster.Silhouette.Score'].values)
@@ -5832,7 +6634,7 @@ plt.show()
 
 
     
-![png](output_183_0.png)
+![png](output_209_0.png)
     
 
 
@@ -5842,7 +6644,7 @@ plt.show()
 # Formulating the final Agglomerative Clustering model
 # using the optimal cluster count
 ##################################
-agglomerative_clustering = AgglomerativeClustering(n_clusters=2, 
+agglomerative_clustering = AgglomerativeClustering(n_clusters=5, 
                                                    linkage='complete')
 agglomerative_clustering = agglomerative_clustering.fit(cancer_death_rate_premodelling_clustering)
 
@@ -5922,7 +6724,7 @@ cancer_death_rate_agglomerative_clustering.head()
       <td>0.8754</td>
       <td>-0.7177</td>
       <td>0.8924</td>
-      <td>1</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>2</th>
@@ -5935,7 +6737,7 @@ cancer_death_rate_agglomerative_clustering.head()
       <td>-0.9625</td>
       <td>-1.0428</td>
       <td>-1.1914</td>
-      <td>0</td>
+      <td>4</td>
     </tr>
     <tr>
       <th>3</th>
@@ -5948,7 +6750,7 @@ cancer_death_rate_agglomerative_clustering.head()
       <td>1.3658</td>
       <td>1.5903</td>
       <td>1.3091</td>
-      <td>1</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>4</th>
@@ -5961,7 +6763,7 @@ cancer_death_rate_agglomerative_clustering.head()
       <td>-0.2718</td>
       <td>-0.5826</td>
       <td>-0.8379</td>
-      <td>0</td>
+      <td>2</td>
     </tr>
   </tbody>
 </table>
@@ -5977,18 +6779,18 @@ cancer_death_rate_agglomerative_clustering.head()
 ##################################
 cancer_death_rate_agglomerative_clustering_plot = sns.pairplot(cancer_death_rate_agglomerative_clustering,
                                                                kind='reg',
-                                                               markers=['o', 's'],
+                                                               markers=['o', 's','X','D','P'],
                                                                plot_kws={'scatter_kws': {'alpha': 0.3}},
                                                                hue='AGGLOMERATIVE_CLUSTER');
 sns.move_legend(cancer_death_rate_agglomerative_clustering_plot, 
                 "lower center",
-                bbox_to_anchor=(.5, 1), ncol=2, title='AGGLOMERATIVE_CLUSTER', frameon=False)
+                bbox_to_anchor=(.5, 1), ncol=5, title='AGGLOMERATIVE_CLUSTER', frameon=False)
 plt.show()
 ```
 
 
     
-![png](output_186_0.png)
+![png](output_212_0.png)
     
 
 
@@ -6003,32 +6805,204 @@ cancer_death_rate_agglomerative_clustering_plot = sns.pairplot(cancer_death_rate
                                                                hue='AGGLOMERATIVE_CLUSTER');
 sns.move_legend(cancer_death_rate_agglomerative_clustering_plot, 
                 "lower center",
-                bbox_to_anchor=(.5, 1), ncol=2, title='AGGLOMERATIVE_CLUSTER', frameon=False)
+                bbox_to_anchor=(.5, 1), ncol=5, title='AGGLOMERATIVE_CLUSTER', frameon=False)
 plt.show()
 ```
 
 
     
-![png](output_187_0.png)
+![png](output_213_0.png)
     
 
 
-### 1.6.6 Ward Hierarchical Clustering <a class="anchor" id="1.6.6"></a>
-
-[Ward Hierarchical Clustering](https://link.springer.com/book/10.1007/978-981-19-0420-2) creates compact, well-separated clusters by minimizing the variance within each cluster during the merging process. In this algorithm, each data point starts as its own cluster, and the algorithm merges clusters iteratively until a stopping criterion is met. The algorithm starts with each data point as a singleton cluster with the number of initial clusters is equal to the number of data points. The pairwise distance matrix is calculated between all clusters and used as a measure of dissimilarity. For each cluster, the within-cluster variance is computed which evaluates how tightly the data points within a cluster are grouped. The two clusters that, when merged, result in the smallest increase in the within-cluster variance are identified and merged in the next step. The within-cluster variance for the newly formed cluster  are recalculated and the pairwise distance matrix updated. All previous steps are repeated until the desired number of clusters is reached or until a stopping criterion is met.
-
-[Silhouette Score](https://www.packtpub.com/product/training-systems-using-python-statistical-modeling/9781838823733) assesses the quality of clusters created by a clustering algorithm. It measures how well-separated the clusters are and how similar each data point in a cluster is to the other points in the same cluster compared to the nearest neighboring cluster. The silhouette score ranges from -1 to 1, where a higher value indicates better-defined clusters. The silhouette method requires the computation of the silhouette scores for each data point which is the average dissimilarity of the data point with all other data points in the next-nearest cluster minus the average dissimilarity of the data point to points in the same cluster and divided by the larger of the two numbers. The overall silhouette score for the clustering is the average of the silhouette scores for all data points.
+### 1.3.5.6 Ward Hierarchical Clustering <a class="anchor" id="1.3.5.6"></a>
 
 1. The [ward hierarchical clustering model](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AgglomerativeClustering.html#sklearn.cluster.AgglomerativeClustering) from the <mark style="background-color: #CCECFF"><b>sklearn.cluster</b></mark> Python library API was implemented. 
 2. The model contains 2 hyperparameters:
     * <span style="color: #FF0000">n_cluster</span> = number of clusters to find made to vary between 2 to 9
     * <span style="color: #FF0000">linkage</span> = linkage criterion used to determine which distance to use between sets of observation held constant at a value equal to ward (minimizes the sum of squared differences and variance within all clusters)
 3. Hyperparameter tuning was conducted on the data with optimal model performance using the silhouette score determined for: 
-    * <span style="color: #FF0000">n_cluster</span> = 2
+    * <span style="color: #FF0000">n_cluster</span> = 9
     * <span style="color: #FF0000">linkage</span> = ward
-4. The apparent model performance of the optimal model is summarized as follows:
+4. The 5-fold cross-validated model performance of the optimal model is summarized as follows:
+    * **Silhouette Score** = 0.2492
+5. To increase coverage for improved interpretability, the apparent model performance of the optimal model with 2 clusters was obtained as follows:
     * **Silhouette Score** = 0.2148
     
+
+
+```python
+##################################
+# Preparing the cross-validation data
+# and parameters to be evaluated
+# for the Ward Hierarchical Clustering algorithm
+##################################
+X = cancer_death_rate_premodelling_clustering.copy()
+ward_hierarchical_kfold_cluster_list = range(2, 10)
+ward_hierarchical_kfold_cluster_silhouette_score = []
+```
+
+
+```python
+##################################
+# Conducting the 5-fold cross-validation
+# using the defined parameters
+# for the Ward Hierarchical Clustering algorithm
+# for each individual cluster count
+##################################
+for k in ward_hierarchical_kfold_cluster_list:
+    ##################################
+    # Defining the hyperparameters
+    ##################################
+    wh = AgglomerativeClustering(n_clusters=k, 
+                                 linkage='ward')
+    ##################################
+    # Defining the 5-fold groups
+    ##################################
+    kfold = KFold(n_splits=5, 
+                  shuffle=True, 
+                  random_state=88888888)
+    scores = []
+
+    for train_index, test_index in kfold.split(X):
+        ##################################
+        # Formulating 5-fold groups
+        ##################################
+        X_train, X_test = X.iloc[train_index], X.iloc[test_index]
+        ##################################
+        # Fitting the Ward Hierarchical Clustering algorithm
+        # on the train data
+        ##################################
+        wh.fit(X_train)
+        ##################################
+        # Assigning clusters for the test data
+        ##################################
+        labels = wh.fit_predict(X_test)
+        ##################################
+        # Computing for the silhouette score
+        # on the test data
+        ##################################
+        score = silhouette_score(X_test, labels)
+        scores.append(score)
+
+    ##################################
+    # Calculating the average silhouette score
+    # for the given cluster count
+    ##################################
+    average_score = np.mean(scores)
+    ward_hierarchical_kfold_cluster_silhouette_score.append(average_score)
+```
+
+
+```python
+##################################
+# Consolidating the model performance metrics
+# for the Ward Hierarchical Clustering algorithm
+# using a range of K values
+##################################
+ward_hierarchical_clustering_kfold_summary = pd.DataFrame(zip(ward_hierarchical_kfold_cluster_list,
+                                                              ward_hierarchical_kfold_cluster_silhouette_score),
+                                                          columns=['Ward.Hierarchical.KFold.Cluster.Count',
+                                                                   'Ward.Hierarchical.KFold.Cluster.Average.Silhouette.Score'])
+ward_hierarchical_clustering_kfold_summary
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Ward.Hierarchical.KFold.Cluster.Count</th>
+      <th>Ward.Hierarchical.KFold.Cluster.Average.Silhouette.Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2</td>
+      <td>0.2173</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>3</td>
+      <td>0.2309</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>4</td>
+      <td>0.2312</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>5</td>
+      <td>0.2202</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>6</td>
+      <td>0.2269</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>7</td>
+      <td>0.2330</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>8</td>
+      <td>0.2411</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>9</td>
+      <td>0.2492</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+###################################
+# Plotting the Average Silhouette Score performance
+# by cluster count using the 5-fold results
+# for the Ward Hierarchical Clustering algorithm
+##################################
+ward_hierarchical_kfold_cluster_count_values = np.array(ward_hierarchical_clustering_kfold_summary['Ward.Hierarchical.KFold.Cluster.Count'].values)
+ward_hierarchical_kfold_silhouette_score_values = np.array(ward_hierarchical_clustering_kfold_summary['Ward.Hierarchical.KFold.Cluster.Average.Silhouette.Score'].values)
+plt.figure(figsize=(10, 6))
+plt.plot(ward_hierarchical_kfold_cluster_count_values, ward_hierarchical_kfold_silhouette_score_values, marker='o',ls='-')
+plt.grid(True)
+plt.ylim(0,1)
+plt.title("Ward Hierarchical Clustering Algorithm: Cluster Count by Cross-Validated Silhouette Score")
+plt.xlabel("Cluster")
+plt.ylabel("Average Silhouette Score")
+plt.show()
+```
+
+
+    
+![png](output_218_0.png)
+    
+
 
 
 ```python
@@ -6155,7 +7129,7 @@ plt.show()
 
 
     
-![png](output_191_0.png)
+![png](output_221_0.png)
     
 
 
@@ -6165,9 +7139,9 @@ plt.show()
 # Formulating the final Ward Hierarchical Clustering model
 # using the optimal cluster count
 ##################################
-ward_hierarchical_clustering = AgglomerativeClustering(n_clusters=2, 
+ward_hierarchical_clustering = AgglomerativeClustering(n_clusters=9, 
                                                        linkage='ward')
-ward_hierarchical_clustering = agglomerative_clustering.fit(cancer_death_rate_premodelling_clustering)
+ward_hierarchical_clustering = ward_hierarchical_clustering.fit(cancer_death_rate_premodelling_clustering)
 
 ###################################
 # Gathering the Silhouette Score
@@ -6232,7 +7206,7 @@ cancer_death_rate_ward_hierarchical_clustering.head()
       <td>-0.6095</td>
       <td>-0.9258</td>
       <td>1.4059</td>
-      <td>1</td>
+      <td>4</td>
     </tr>
     <tr>
       <th>1</th>
@@ -6245,7 +7219,7 @@ cancer_death_rate_ward_hierarchical_clustering.head()
       <td>0.8754</td>
       <td>-0.7177</td>
       <td>0.8924</td>
-      <td>1</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>2</th>
@@ -6271,7 +7245,7 @@ cancer_death_rate_ward_hierarchical_clustering.head()
       <td>1.3658</td>
       <td>1.5903</td>
       <td>1.3091</td>
-      <td>1</td>
+      <td>7</td>
     </tr>
     <tr>
       <th>4</th>
@@ -6284,7 +7258,7 @@ cancer_death_rate_ward_hierarchical_clustering.head()
       <td>-0.2718</td>
       <td>-0.5826</td>
       <td>-0.8379</td>
-      <td>0</td>
+      <td>1</td>
     </tr>
   </tbody>
 </table>
@@ -6300,18 +7274,18 @@ cancer_death_rate_ward_hierarchical_clustering.head()
 ##################################
 cancer_death_rate_ward_hierarchical_clustering_plot = sns.pairplot(cancer_death_rate_ward_hierarchical_clustering,
                                                                    kind='reg',
-                                                                   markers=["o", "s"],
+                                                                   markers=['o', 's','X','D','P','*','v','^','h'],
                                                                    plot_kws={'scatter_kws': {'alpha': 0.3}},
                                                                    hue='WARD_HIERARCHICAL_CLUSTER');
 sns.move_legend(cancer_death_rate_ward_hierarchical_clustering_plot, 
                 "lower center",
-                bbox_to_anchor=(.5, 1), ncol=2, title='WARD_HIERARCHICAL_CLUSTER', frameon=False)
+                bbox_to_anchor=(.5, 1), ncol=9, title='WARD_HIERARCHICAL_CLUSTER', frameon=False)
 plt.show()
 ```
 
 
     
-![png](output_194_0.png)
+![png](output_224_0.png)
     
 
 
@@ -6326,41 +7300,37 @@ cancer_death_rate_ward_hierarchical_clustering_plot = sns.pairplot(cancer_death_
                                                                    hue='WARD_HIERARCHICAL_CLUSTER');
 sns.move_legend(cancer_death_rate_ward_hierarchical_clustering_plot, 
                 "lower center",
-                bbox_to_anchor=(.5, 1), ncol=2, title='WARD_HIERARCHICAL_CLUSTER', frameon=False)
+                bbox_to_anchor=(.5, 1), ncol=9, title='WARD_HIERARCHICAL_CLUSTER', frameon=False)
 plt.show()
 ```
 
 
     
-![png](output_195_0.png)
+![png](output_225_0.png)
     
 
 
-## 1.7. Consolidated Findings <a class="anchor" id="1.7"></a>
+### 1.3.6 Model Selection <a class="anchor" id="1.3.10"></a>
 
-1. Among the range of cluster counts evaluated, the [k-means clustering model](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html#sklearn.cluster.KMeans) with 2 clusters provided the most compact intra-cluster and differential inter-cluster segmentation of countries:
-    * **Silhouette Score** = 0.2355
-2. Among the range of cluster counts evaluated, the [bisecting k-means clustering model](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.BisectingKMeans.html#sklearn.cluster.BisectingKMeans) with 2 clusters provided the most compact intra-cluster and differential inter-cluster segmentation of countries:
-    * **Silhouette Score** = 0.2355
-3. Among the range of cluster counts evaluated, the [gaussian mixture clustering model](https://scikit-learn.org/stable/modules/generated/sklearn.mixture.GaussianMixture.html#sklearn.mixture.GaussianMixture) with 2 clusters provided the most compact intra-cluster and differential inter-cluster segmentation of countries:
-    * **Silhouette Score** = 0.2239
-4. Among the range of cluster counts evaluated, the [agglomerative clustering model](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AgglomerativeClustering.html#sklearn.cluster.AgglomerativeClustering) with 2 clusters provided the most compact intra-cluster and differential inter-cluster segmentation of countries:
-    * **Silhouette Score** = 0.1629
-5. Among the range of cluster counts evaluated, the [ward hierarchical clustering model](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AgglomerativeClustering.html#sklearn.cluster.AgglomerativeClustering) with 2 clusters provided the most compact intra-cluster and differential inter-cluster segmentation of countries:
-    * **Silhouette Score** = 0.2148    
+1. Among the range of cluster counts evaluated, the [k-means clustering model](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html#sklearn.cluster.KMeans) with 2 clusters provided the most compact intra-cluster and differential inter-cluster segmentation of countries based on cross-validation:
+    * **K-Means Clustering Cross-Validated Silhouette Score** = 0.2315
+2. Among the range of cluster counts evaluated, the [bisecting k-means clustering model](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.BisectingKMeans.html#sklearn.cluster.BisectingKMeans) with 2 clusters provided the most compact intra-cluster and differential inter-cluster segmentation of countries based on cross-validation:
+    * **Bisecting K-Means Clustering Cross-Validated  Silhouette Score** = 0.2315
+3. Among the range of cluster counts evaluated, the [gaussian mixture clustering model](https://scikit-learn.org/stable/modules/generated/sklearn.mixture.GaussianMixture.html#sklearn.mixture.GaussianMixture) with 2 clusters provided the most compact intra-cluster and differential inter-cluster segmentation of countries based on cross-validation:
+    * **Gaussian Mixture Clustering Cross-Validated  Silhouette Score** = 0.1289
+4. Among the range of cluster counts evaluated, the [agglomerative clustering model](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AgglomerativeClustering.html#sklearn.cluster.AgglomerativeClustering) with 5 clusters provided the most compact intra-cluster and differential inter-cluster segmentation of countries based on cross-validation:
+    * **Agglomerative Clustering Cross-Validated  Silhouette Score** = 0.2339
+5. Among the range of cluster counts evaluated, the [ward hierarchical clustering model](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AgglomerativeClustering.html#sklearn.cluster.AgglomerativeClustering) with 9 clusters provided the most compact intra-cluster and differential inter-cluster segmentation of countries based on cross-validation:
+    * **Ward Hierarchical Clustering Cross-Validated Silhouette Score** = 0.2412    
+6. To increase coverage for improved interpretability, all clustering models were re-evaluated on the original data with 2 clusters for an objective comparison, with results as follows:
+    * **K-Means Clustering Apparent Silhouette Score** = 0.2355 
+    * **Bisecting K-Means Clustering Apparent Silhouette Score** = 0.2355 
+    * **Gaussian Mixture Clustering Apparent Silhouette Score** = 0.2239
+    * **Agglomerative Clustering Apparent Silhouette Score** = 0.1629 
+    * **Ward Hierarchical Clustering Apparent Silhouette Score** = 0.2148 
 6. Comparing all results from the clustering models formulated, the [k-means clustering model](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html#sklearn.cluster.KMeans) which demonstrated the highest silhouette score was selected as the final model for segmenting the countries based on similar characteristics. 
-    * **Silhouette Score** = 0.2355   
-7. Given the final model, the following segmented groupings were observed from the formulated clusters:  
-    * **Cluster 0: HIGH_PAN_LUN_COL_LIV_CAN** composed of countries characterized by:
-        * Higher death rates for pancreatic, lung, colon and liver cancers
-        * Lower death rates for prostate, breast, cervical, stomach and esophageal cancers
-        * Higher smoking prevalence, overweight prevalence and alcohol consumption
-        * Predominantly from North America, Europe, West Asia, Central Asia, East Asia, Southeast Asia and Australia regions
-    * **Cluster 1: HIGH_PRO_BRE_CER_STO_ESO_CAN** composed of countries characterized by:
-        * Higher death rates for prostate, breast, cervical, stomach and esophageal cancers
-        * Lower death rates for pancreatic, lung, colon and liver cancers
-        * Lower smoking prevalence, overweight prevalence and alcohol consumption
-        * Predominantly from South America, South Asia and Africa regions
+    * **K-Means Clustering Cross-Validated Silhouette Score** = 0.2315
+    * **K-Means Clustering Apparent Silhouette Score** = 0.2355   
         
 
 
@@ -6432,12 +7402,12 @@ display(performance_comparison_silhouette_score)
     <tr>
       <th>3</th>
       <td>agglomerative_clustering</td>
-      <td>0.1629</td>
+      <td>0.1617</td>
     </tr>
     <tr>
       <th>4</th>
       <td>ward_hierarchical_clustering</td>
-      <td>0.1629</td>
+      <td>0.1689</td>
     </tr>
   </tbody>
 </table>
@@ -6464,9 +7434,26 @@ for container in performance_comparison_silhouette_score_plot.containers:
 
 
     
-![png](output_198_0.png)
+![png](output_228_0.png)
     
 
+
+### 1.3.7 Model Presentation <a class="anchor" id="1.3.7"></a>
+
+#### 1.3.7.1 Clustering Visualization Plots <a class="anchor" id="1.3.7.1"></a>
+
+1. Given the final **K-Means Clustering** model with 2 clusters, the following segmented groupings were observed from the formulated clusters as evaluated using pair plots, heat maps and geographic maps:  
+    * **Cluster 0: HIGH_PAN_LUN_COL_LIV_CAN** composed of countries characterized by:
+        * Higher death rates for pancreatic, lung, colon and liver cancers
+        * Lower death rates for prostate, breast, cervical, stomach and esophageal cancers
+        * Higher smoking prevalence, overweight prevalence and alcohol consumption
+        * Predominantly from North America, Europe, West Asia, Central Asia, East Asia, Southeast Asia and Australia regions
+    * **Cluster 1: HIGH_PRO_BRE_CER_STO_ESO_CAN** composed of countries characterized by:
+        * Higher death rates for prostate, breast, cervical, stomach and esophageal cancers
+        * Lower death rates for pancreatic, lung, colon and liver cancers
+        * Lower smoking prevalence, overweight prevalence and alcohol consumption
+        * Predominantly from South America, South Asia and Africa regions
+        
 
 
 ```python
@@ -6603,7 +7590,7 @@ plt.show()
 
 
     
-![png](output_200_0.png)
+![png](output_232_0.png)
     
 
 
@@ -6624,7 +7611,7 @@ plt.show()
 
 
     
-![png](output_201_0.png)
+![png](output_233_0.png)
     
 
 
@@ -6728,7 +7715,7 @@ plt.show()
 
 
     
-![png](output_203_0.png)
+![png](output_235_0.png)
     
 
 
@@ -6888,7 +7875,7 @@ plt.show()
 
 
     
-![png](output_206_0.png)
+![png](output_238_0.png)
     
 
 
@@ -6991,7 +7978,7 @@ plt.show()
 
 
     
-![png](output_210_0.png)
+![png](output_242_0.png)
     
 
 
@@ -7138,7 +8125,7 @@ plt.show()
 
 
     
-![png](output_213_0.png)
+![png](output_245_0.png)
     
 
 
@@ -7156,7 +8143,7 @@ plt.show()
 
 
     
-![png](output_214_0.png)
+![png](output_246_0.png)
     
 
 
@@ -7174,7 +8161,7 @@ plt.show()
 
 
     
-![png](output_215_0.png)
+![png](output_247_0.png)
     
 
 
@@ -7192,7 +8179,7 @@ plt.show()
 
 
     
-![png](output_216_0.png)
+![png](output_248_0.png)
     
 
 
@@ -7210,7 +8197,7 @@ plt.show()
 
 
     
-![png](output_217_0.png)
+![png](output_249_0.png)
     
 
 
@@ -7228,7 +8215,7 @@ plt.show()
 
 
     
-![png](output_218_0.png)
+![png](output_250_0.png)
     
 
 
@@ -7246,7 +8233,7 @@ plt.show()
 
 
     
-![png](output_219_0.png)
+![png](output_251_0.png)
     
 
 
@@ -7264,7 +8251,7 @@ plt.show()
 
 
     
-![png](output_220_0.png)
+![png](output_252_0.png)
     
 
 
@@ -7282,7 +8269,7 @@ plt.show()
 
 
     
-![png](output_221_0.png)
+![png](output_253_0.png)
     
 
 
@@ -7393,7 +8380,7 @@ plt.show()
 
 
     
-![png](output_224_0.png)
+![png](output_256_0.png)
     
 
 
@@ -7411,7 +8398,7 @@ plt.show()
 
 
     
-![png](output_225_0.png)
+![png](output_257_0.png)
     
 
 
@@ -7429,7 +8416,7 @@ plt.show()
 
 
     
-![png](output_226_0.png)
+![png](output_258_0.png)
     
 
 
@@ -7452,9 +8439,9 @@ plt.show()
 
 * From an initial dataset comprised of 208 observations and 16 descriptors, an optimal subset of **183 observations and 16 predictors** representing cancer mortality, lifestyle factors and geolocation descriptors were determined after conducting data quality assessment, excluding cases noted with irregularities and applying preprocessing operations most suitable for the downstream analysis. All data quality issues were addressed without the need to eliminate existing descriptors in the study
 
-* Multiple clustering modelling algorithms with various cluster counts were formulated using **K-Means**, **Bisecting K-Means**, **Gaussian Mixture Model**, **Agglomerative** and **Ward Hierarchical** methods. The best model with optimized hyperparameters from each algorithm were determined using the **Silhouette Score** used as the primary performance metric. Due to the unsupervised nature of the analysis, all candidate models were compared based on apparent performance.
+* Multiple clustering modelling algorithms with various cluster counts were formulated using **K-Means**, **Bisecting K-Means**, **Gaussian Mixture Model**, **Agglomerative** and **Ward Hierarchical** methods. The best model with optimized hyperparameters from each algorithm were determined through internal resampling validation using **5-Fold Cross Validation** using the **Silhouette Score** used as the primary performance metric. Due to the unsupervised learning nature of the analysis, all candidate models were compared based on internal validation and apparent performance.
 
-* The final model selected among candidates used **K-Means Clustering** with optimal hyperparameters: **number of clusters to form and centroids to generate (n_clusters=2)**, **number of times the k-means algorithm is run with different centroid seeds(n_init=auto equivalent to 1)**, **method for initialization (init=k-means++ equivalent to selecting initial cluster centroids using sampling based on an empirical probability distribution of the points’ contribution to the overall inertia)**. This model demonstrated the best apparent Silhouette Score (**Silhouette Score=0.24**) reflecting a moderate quality of the formulated clusters.
+* The final model selected among candidates used **K-Means Clustering** with optimal hyperparameters: **number of clusters to form and centroids to generate (n_clusters=2)**, **number of times the k-means algorithm is run with different centroid seeds(n_init=auto equivalent to 1)**, **method for initialization (init=k-means++ equivalent to selecting initial cluster centroids using sampling based on an empirical probability distribution of the points’ contribution to the overall inertia)**. This model demonstrated the best cross-validated (**Silhouette Score=0.23**) and apparent Silhouette Scores (**Silhouette Score=0.24**) under an assumption of 2 optimal clusters reflecting a moderate quality of the formulated clusters.
 
 * Post-hoc exploration of the model results involved clustering visualization methods using **Pair Plots**, **Heat Maps** and **Geographic Maps** - providing an intuitive method to investigate and understand the characteristics of the two discovered cancer clusters (**Cluster 0 : HIGH_PAN_LUN_COL_LIV_CAN** and **Cluster 1: HIGH_PRO_BRE_CER_STO_ESO_CAN**) across countries in terms of death rates, lifestyle factors and geolocation. These findings aided in the formulation of insights on the relationship and association of the various descriptors for the clusters identified.
 
@@ -7465,9 +8452,9 @@ plt.show()
 
 ![CaseStudy4_Summary_3.png](attachment:076a5183-0afb-4042-889b-8eab8cfb00a1.png)
 
-![CaseStudy4_Summary_4.png](attachment:1ccd772c-ce66-462f-8d65-557ae02cebee.png)
+![CaseStudy4_Summary_4.png](attachment:096a23be-cf15-4567-a3e7-b55be7ab6fb9.png)
 
-![CaseStudy4_Summary_5.png](attachment:687eab49-2fa2-4b58-adee-b0e6e4a59d1b.png)
+![CaseStudy4_Summary_5.png](attachment:eff8e8e5-6491-41d9-8c37-ae94eb91e49f.png)
 
 ![CaseStudy4_Summary_6.png](attachment:6b7775f7-0380-42c6-9f66-19b11849c402.png)
 
