@@ -69,7 +69,7 @@ Subsequent analysis and modelling steps involving data understanding, data prepa
 
 Specific objectives are given as follows:
 
-* Obtain an optimal subset of observations and predictors by conducting data quality assessment and feature selection, excluding cases or variables noted with irregularities and applying preprocessing operations most suitable for the downstream analysis
+* Obtain an optimal subset of observations and descriptors by conducting data quality assessment and feature selection, excluding cases or variables noted with irregularities and applying preprocessing operations most suitable for the downstream analysis
 
 * Develop multiple clustering models with optimized hyperparameters in terms of the number of clusters through through internal resampling validation
 
@@ -130,7 +130,7 @@ Preliminary data used in the study was evaluated and prepared for analysis and m
 
 Statistical test measure assessed for the numeric descriptors in the study to determine the most optimal subset of variables for the subsequent modelling process included the following:
 
-[Pearson’s Correlation Coefficient](https://royalsocietypublishing.org/doi/10.1098/rsta.1896.0007) is a parametric measure of the linear correlation for a pair of features by calculating the ratio between their covariance and the product of their standard deviations. The presence of high absolute correlation values indicate the univariate association between the numeric predictors and the numeric response.
+[Pearson’s Correlation Coefficient](https://royalsocietypublishing.org/doi/10.1098/rsta.1896.0007) is a parametric measure of the linear correlation for a pair of features by calculating the ratio between their covariance and the product of their standard deviations. The presence of high absolute correlation values indicate the univariate association among the numeric decriptors.
 
 ### 1.2.3 Model Formulation <a class="anchor" id="1.2.3"></a>
 
@@ -4890,7 +4890,7 @@ kmeans_kfold_silhouette_score_values = np.array(kmeans_clustering_kfold_summary[
 plt.figure(figsize=(10, 6))
 plt.plot(kmeans_kfold_cluster_count_values, kmeans_kfold_silhouette_score_values, marker='o',ls='-')
 plt.grid(True)
-plt.ylim(0,1)
+plt.ylim(0,0.3)
 plt.title("K-Means Clustering Algorithm: Cluster Count by Cross-Validated Silhouette Score")
 plt.xlabel("Cluster")
 plt.ylabel("Average Silhouette Score")
@@ -5063,7 +5063,7 @@ kmeans_silhouette_score_values = np.array(kmeans_clustering_evaluation_summary['
 plt.figure(figsize=(10, 6))
 plt.plot(kmeans_cluster_count_values, kmeans_silhouette_score_values, marker='o',ls='-')
 plt.grid(True)
-plt.ylim(0,1)
+plt.ylim(0,0.3)
 plt.title("K-Means Clustering Algorithm: Cluster Count by Silhouette Score")
 plt.xlabel("Cluster")
 plt.ylabel("Silhouette Score")
@@ -5438,7 +5438,7 @@ bisecting_kmeans_kfold_silhouette_score_values = np.array(bisecting_kmeans_clust
 plt.figure(figsize=(10, 6))
 plt.plot(bisecting_kmeans_kfold_cluster_count_values, bisecting_kmeans_kfold_silhouette_score_values, marker='o',ls='-')
 plt.grid(True)
-plt.ylim(0,1)
+plt.ylim(0,0.3)
 plt.title("Bisecting K-Means Clustering Algorithm: Cluster Count by Cross-Validated Silhouette Score")
 plt.xlabel("Cluster")
 plt.ylabel("Average Silhouette Score")
@@ -5611,7 +5611,7 @@ bisecting_kmeans_silhouette_score_values = np.array(bisecting_kmeans_clustering_
 plt.figure(figsize=(10, 6))
 plt.plot(bisecting_kmeans_cluster_count_values, bisecting_kmeans_silhouette_score_values, marker='o',ls='-')
 plt.grid(True)
-plt.ylim(0,1)
+plt.ylim(0,0.3)
 plt.title("Bisecting K-Means Clustering Algorithm: Cluster Count by Silhouette Score")
 plt.xlabel("Cluster")
 plt.ylabel("Silhouette Score")
@@ -5989,7 +5989,7 @@ gaussian_mixture_kfold_silhouette_score_values = np.array(gaussian_mixture_clust
 plt.figure(figsize=(10, 6))
 plt.plot(gaussian_mixture_kfold_cluster_count_values, gaussian_mixture_kfold_silhouette_score_values, marker='o',ls='-')
 plt.grid(True)
-plt.ylim(0,1)
+plt.ylim(0,0.3)
 plt.title("GMM Clustering Algorithm: Cluster Count by Cross-Validated Silhouette Score")
 plt.xlabel("Cluster")
 plt.ylabel("Average Silhouette Score")
@@ -6124,7 +6124,7 @@ gaussian_mixture_silhouette_score_values = np.array(gaussian_mixture_clustering_
 plt.figure(figsize=(10, 6))
 plt.plot(gaussian_mixture_cluster_count_values, gaussian_mixture_silhouette_score_values, marker='o',ls='-')
 plt.grid(True)
-plt.ylim(0,1)
+plt.ylim(0,0.3)
 plt.title("GMM Clustering Algorithm: Cluster Count by Silhouette Score")
 plt.xlabel("Cluster")
 plt.ylabel("Silhouette Score")
@@ -6493,7 +6493,7 @@ agglomerative_kfold_silhouette_score_values = np.array(agglomerative_clustering_
 plt.figure(figsize=(10, 6))
 plt.plot(agglomerative_kfold_cluster_count_values, agglomerative_kfold_silhouette_score_values, marker='o',ls='-')
 plt.grid(True)
-plt.ylim(0,1)
+plt.ylim(0,0.3)
 plt.title("Agglomerative Clustering Algorithm: Cluster Count by Cross-Validated Silhouette Score")
 plt.xlabel("Cluster")
 plt.ylabel("Average Silhouette Score")
@@ -6625,7 +6625,7 @@ agglomerative_silhouette_score_values = np.array(agglomerative_clustering_evalua
 plt.figure(figsize=(10, 6))
 plt.plot(agglomerative_cluster_count_values, agglomerative_silhouette_score_values, marker='o',ls='-')
 plt.grid(True)
-plt.ylim(0,1)
+plt.ylim(0,0.3)
 plt.title("Agglomerative Clustering Algorithm: Cluster Count by Silhouette Score")
 plt.xlabel("Cluster")
 plt.ylabel("Silhouette Score")
@@ -6991,7 +6991,7 @@ ward_hierarchical_kfold_silhouette_score_values = np.array(ward_hierarchical_clu
 plt.figure(figsize=(10, 6))
 plt.plot(ward_hierarchical_kfold_cluster_count_values, ward_hierarchical_kfold_silhouette_score_values, marker='o',ls='-')
 plt.grid(True)
-plt.ylim(0,1)
+plt.ylim(0,0.3)
 plt.title("Ward Hierarchical Clustering Algorithm: Cluster Count by Cross-Validated Silhouette Score")
 plt.xlabel("Cluster")
 plt.ylabel("Average Silhouette Score")
@@ -7120,7 +7120,7 @@ ward_hierarchical_silhouette_score_values = np.array(ward_hierarchical_clusterin
 plt.figure(figsize=(10, 6))
 plt.plot(ward_hierarchical_cluster_count_values, ward_hierarchical_silhouette_score_values, marker='o',ls='-')
 plt.grid(True)
-plt.ylim(0,1)
+plt.ylim(0,0.3)
 plt.title("Ward Hierarchical Clustering Algorithm: Cluster Count by Silhouette Score")
 plt.xlabel("Cluster")
 plt.ylabel("Silhouette Score")
@@ -8437,9 +8437,9 @@ plt.show()
 
 **Overall, disparities in cancer mortality were observed among groups of countries with contrasting lifestyle choices and geographic locations. Shared risk factors, socio-economic demographics and genetic predisposition may be potential drivers to the observed associations between death rates among certain cancer types. Unhealthy lifestyle choices, including smoking, obesity, and excessive alcohol consumption, may be well-established risk factors for cancer through direct and indirect effects on cellular processes, inflammation, DNA damage, and hormonal regulation. Additionally, the geographic locations of countries can have a substantial impact on cancer mortality rates driven by a complex interplay of various effects, encompassing differences in healthcare infrastructure, socio-economic conditions, cultural dissimilarities, environmental exposures, access to screening and early detection, among others.**
 
-* From an initial dataset comprised of 208 observations and 16 descriptors, an optimal subset of **183 observations and 16 predictors** representing cancer mortality, lifestyle factors and geolocation descriptors were determined after conducting data quality assessment, excluding cases noted with irregularities and applying preprocessing operations most suitable for the downstream analysis. All data quality issues were addressed without the need to eliminate existing descriptors in the study
+* From an initial dataset comprised of 208 observations and 16 descriptors, an optimal subset of **183 observations and 16 descriptors** representing cancer mortality, lifestyle factors and geolocation descriptors were determined after conducting data quality assessment, excluding cases noted with irregularities and applying preprocessing operations most suitable for the downstream analysis. All data quality issues were addressed without the need to eliminate existing descriptors in the study
 
-* Multiple clustering modelling algorithms with various cluster counts were formulated using **K-Means**, **Bisecting K-Means**, **Gaussian Mixture Model**, **Agglomerative** and **Ward Hierarchical** methods. The best model with optimized hyperparameters from each algorithm were determined through internal resampling validation using **5-Fold Cross Validation** using the **Silhouette Score** used as the primary performance metric. Due to the unsupervised learning nature of the analysis, all candidate models were compared based on internal validation and apparent performance.
+* Multiple clustering modelling algorithms with various cluster counts were formulated using **K-Means**, **Bisecting K-Means**, **Gaussian Mixture Model**, **Agglomerative** and **Ward Hierarchical** methods. The best model with optimized hyperparameters from each algorithm was determined through internal resampling validation using **5-Fold Cross Validation** using the **Silhouette Score** used as the primary performance metric. Due to the unsupervised learning nature of the analysis, all candidate models were compared based on internal validation and apparent performance.
 
 * The final model selected among candidates used **K-Means Clustering** with optimal hyperparameters: **number of clusters to form and centroids to generate (n_clusters=2)**, **number of times the k-means algorithm is run with different centroid seeds(n_init=auto equivalent to 1)**, **method for initialization (init=k-means++ equivalent to selecting initial cluster centroids using sampling based on an empirical probability distribution of the points’ contribution to the overall inertia)**. This model demonstrated the best cross-validated (**Silhouette Score=0.23**) and apparent Silhouette Scores (**Silhouette Score=0.24**) under an assumption of 2 optimal clusters reflecting a moderate quality of the formulated clusters.
 
@@ -8452,7 +8452,7 @@ plt.show()
 
 ![CaseStudy4_Summary_3.png](attachment:076a5183-0afb-4042-889b-8eab8cfb00a1.png)
 
-![CaseStudy4_Summary_4.png](attachment:096a23be-cf15-4567-a3e7-b55be7ab6fb9.png)
+![CaseStudy4_Summary_4.png](attachment:29070c07-e71a-4e86-adfc-47af11ce9b3c.png)
 
 ![CaseStudy4_Summary_5.png](attachment:eff8e8e5-6491-41d9-8c37-ae94eb91e49f.png)
 
