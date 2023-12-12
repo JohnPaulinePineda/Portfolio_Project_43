@@ -3889,35 +3889,13 @@ num_cols = 3
 
 ```python
 ##################################
-# Formulating the subplot structure
-##################################
-fig, axes = plt.subplots(num_rows, num_cols, figsize=(15, 15))
-
-##################################
-# Flattening the multi-row and
-# multi-column axes
-##################################
-axes = axes.ravel()
-
-##################################
 # Formulating the individual scatterplots
 # for all scaled numeric columns
 ##################################
+plt.figure(figsize=[15,15])
 for i, x_variable in enumerate(x_variables):
-    ax = axes[i]
-    ax.scatter(cancer_death_rate_preprocessed[x_variable],cancer_death_rate_preprocessed[y_variable])
-    ax.set_title(f'{y_variable} Versus {x_variable}')
-    ax.set_xlabel(x_variable)
-    ax.set_ylabel(y_variable)
-
-##################################
-# Adjusting the subplot layout
-##################################
-plt.tight_layout()
-
-##################################
-# Presenting the subplots
-##################################
+    plt.subplot(num_rows,num_cols,i+1)
+    sns.regplot(data=cancer_death_rate_preprocessed,x=x_variable,y=y_variable, line_kws={"color":'red'})    
 plt.show()
 ```
 
@@ -3950,35 +3928,13 @@ num_cols = 3
 
 ```python
 ##################################
-# Formulating the subplot structure
-##################################
-fig, axes = plt.subplots(num_rows, num_cols, figsize=(15, 15))
-
-##################################
-# Flattening the multi-row and
-# multi-column axes
-##################################
-axes = axes.ravel()
-
-##################################
 # Formulating the individual scatterplots
 # for all scaled numeric columns
 ##################################
+plt.figure(figsize=[15,15])
 for i, x_variable in enumerate(x_variables):
-    ax = axes[i]
-    ax.scatter(cancer_death_rate_preprocessed[x_variable],cancer_death_rate_preprocessed[y_variable])
-    ax.set_title(f'{y_variable} Versus {x_variable}')
-    ax.set_xlabel(x_variable)
-    ax.set_ylabel(y_variable)
-
-##################################
-# Adjusting the subplot layout
-##################################
-plt.tight_layout()
-
-##################################
-# Presenting the subplots
-##################################
+    plt.subplot(num_rows,num_cols,i+1)
+    sns.regplot(data=cancer_death_rate_preprocessed,x=x_variable,y=y_variable, line_kws={"color":'red'})    
 plt.show()
 ```
 
@@ -4011,35 +3967,13 @@ num_cols = 3
 
 ```python
 ##################################
-# Formulating the subplot structure
-##################################
-fig, axes = plt.subplots(num_rows, num_cols, figsize=(15, 15))
-
-##################################
-# Flattening the multi-row and
-# multi-column axes
-##################################
-axes = axes.ravel()
-
-##################################
 # Formulating the individual scatterplots
 # for all scaled numeric columns
 ##################################
+plt.figure(figsize=[15,15])
 for i, x_variable in enumerate(x_variables):
-    ax = axes[i]
-    ax.scatter(cancer_death_rate_preprocessed[x_variable],cancer_death_rate_preprocessed[y_variable])
-    ax.set_title(f'{y_variable} Versus {x_variable}')
-    ax.set_xlabel(x_variable)
-    ax.set_ylabel(y_variable)
-
-##################################
-# Adjusting the subplot layout
-##################################
-plt.tight_layout()
-
-##################################
-# Presenting the subplots
-##################################
+    plt.subplot(num_rows,num_cols,i+1)
+    sns.regplot(data=cancer_death_rate_preprocessed,x=x_variable,y=y_variable, line_kws={"color":'red'})    
 plt.show()
 ```
 
@@ -4592,7 +4526,8 @@ cancer_death_rate_premodelling.head()
 ##################################
 sns.pairplot(cancer_death_rate_premodelling, 
              kind='reg',
-             plot_kws={'scatter_kws': {'alpha': 0.3}},)
+             plot_kws={'scatter_kws': {'alpha': 0.3}, 
+                       'line_kws':{'color':'red'}})
 plt.show()
 ```
 
