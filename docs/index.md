@@ -8465,6 +8465,9 @@ plt.show()
 * **[Article]** [KMeans Hyper-parameters Explained with Examples](https://towardsdatascience.com/kmeans-hyper-parameters-explained-with-examples-c93505820cd3) by Sujeewa Kumaratunga (Towards Data Science)
 * **[Article]** [KMeans Silhouette Score Python Examples](https://vitalflux.com/kmeans-silhouette-score-explained-with-python-example/#google_vignette) by Ajitesh Kumar (Analytics Yogi)
 * **[Publication]** [A Comparison of Document Clustering Techniques](https://www.semanticscholar.org/paper/A-Comparison-of-Document-Clustering-Techniques-Steinbach-Karypis/9378a3797d5f815babe7b392a199ea9d8d4f1dcf) by Michael Steinbach, George Karypis and Vipin Kumar (Computer Science)
+* **[Course]** [IBM Data Analyst Professional Certificate](https://www.coursera.org/professional-certificates/ibm-data-analyst) by IBM Team (Coursera)
+* **[Course]** [IBM Data Science Professional Certificate](https://www.coursera.org/professional-certificates/ibm-data-science) by IBM Team (Coursera)
+* **[Course]** [IBM Machine Learning Professional Certificate](https://www.coursera.org/professional-certificates/ibm-machine-learning) by IBM Team (Coursera)
 
 
 
