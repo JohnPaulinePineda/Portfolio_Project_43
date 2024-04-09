@@ -8385,6 +8385,7 @@ plt.show()
 * Considering other clustering performance measures to externally validate the clustering algorithm results and assess performance relative to external criteria
 * Establishing a baseline performance by running each algorithm with default parameters to serve as a reference point for evaluating the effectiveness of parameter tuning and algorithm selection
 * Exploring ensemble methods to combine results from multiple clustering algorithms which can improve robustness and stability by reducing the impact of algorithmic biases
+* Applying dimensionality reduction techniques such as PCA, t-SNE, or UMAP before visualization to reduce the data to a manageable number of dimensions.
 
 
 ![CaseStudy4_Summary_1.png](attachment:abc7747a-95c7-4b82-ba63-45fa4e926f65.png)
