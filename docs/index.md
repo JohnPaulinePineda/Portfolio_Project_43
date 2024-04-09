@@ -8380,6 +8380,12 @@ plt.show()
 
 * Post-hoc exploration of the model results involved clustering visualization methods using **Pair Plots**, **Heat Maps** and **Geographic Maps** - providing an intuitive method to investigate and understand the characteristics of the two discovered cancer clusters (**Cluster 0 : HIGH_PAN_LUN_COL_LIV_CAN** and **Cluster 1: HIGH_PRO_BRE_CER_STO_ESO_CAN**) across countries in terms of death rates, lifestyle factors and geolocation. These findings aided in the formulation of insights on the relationship and association of the various descriptors for the clusters identified.
 
+**The current results have limitations which can be further addressed by extending the study to include the following actions:**
+* Conducting sensitivity analysis to assess the robustness of the clustering results to variations in hyperparameters, distance metrics, or preprocessing techniques
+* Considering other clustering performance measures to externally validate the clustering algorithm results and assess performance relative to external criteria
+* Establishing a baseline performance by running each algorithm with default parameters to serve as a reference point for evaluating the effectiveness of parameter tuning and algorithm selection
+* Exploring ensemble methods to combine results from multiple clustering algorithms which can improve robustness and stability by reducing the impact of algorithmic biases
+
 
 ![CaseStudy4_Summary_1.png](attachment:abc7747a-95c7-4b82-ba63-45fa4e926f65.png)
 
