@@ -2,7 +2,7 @@
 # Unsupervised Learning : Discovering Global Patterns in Cancer Mortality Across Countries Via Clustering Analysis
 
 ***
-### John Pauline Pineda <br> <br> *December 10, 2023*
+### [**John Pauline Pineda**](https://github.com/JohnPaulinePineda) <br> <br> *December 10, 2023*
 ***
 
 * [**1. Table of Contents**](#TOC)
@@ -198,14 +198,6 @@ Model presentation was conducted post-hoc to interpret the formulated clusters b
 
 ```python
 ##################################
-# Installing shap package
-##################################
-# !pip install geopandas
-```
-
-
-```python
-##################################
 # Setting the Python Environment
 ##################################
 import os
@@ -222,9 +214,9 @@ import itertools
 %matplotlib inline
 
 from operator import add,mul,truediv
-from sklearn.preprocessing import PowerTransformer, StandardScaler
 from scipy import stats
 
+from sklearn.preprocessing import PowerTransformer, StandardScaler
 from sklearn.model_selection import KFold
 from sklearn.cluster import KMeans, AffinityPropagation, MeanShift, SpectralClustering, AgglomerativeClustering, Birch, BisectingKMeans
 from sklearn.mixture import GaussianMixture
@@ -245,9 +237,19 @@ pd.options.display.float_format = '{:.4f}'.format
 
 ```python
 ##################################
-# Loading the dataset
+# Defining file paths
 ##################################
-cancer_death_rate = pd.read_csv('CancerDeathsByCountryCode.csv')
+DATASETS_ORIGINAL_PATH = r"datasets\original"
+REFERENCES_PATH = r"references"
+```
+
+
+```python
+##################################
+# Loading the dataset
+# from the DATASETS_ORIGINAL_PATH
+##################################
+cancer_death_rate = pd.read_csv(os.path.join("..", DATASETS_ORIGINAL_PATH, "CancerDeathsByCountryCode.csv"))
 ```
 
 
@@ -777,7 +779,7 @@ cancer_death_rate.duplicated().sum()
 
 
 
-    0
+    np.int64(0)
 
 
 
@@ -1355,6 +1357,27 @@ else:
   </thead>
   <tbody>
     <tr>
+      <th>57</th>
+      <td>England</td>
+      <td>16</td>
+      <td>4</td>
+      <td>0.2500</td>
+    </tr>
+    <tr>
+      <th>161</th>
+      <td>Scotland</td>
+      <td>16</td>
+      <td>4</td>
+      <td>0.2500</td>
+    </tr>
+    <tr>
+      <th>186</th>
+      <td>Tokelau</td>
+      <td>16</td>
+      <td>4</td>
+      <td>0.2500</td>
+    </tr>
+    <tr>
       <th>204</th>
       <td>Wales</td>
       <td>16</td>
@@ -1369,50 +1392,8 @@ else:
       <td>0.2500</td>
     </tr>
     <tr>
-      <th>57</th>
-      <td>England</td>
-      <td>16</td>
-      <td>4</td>
-      <td>0.2500</td>
-    </tr>
-    <tr>
-      <th>186</th>
-      <td>Tokelau</td>
-      <td>16</td>
-      <td>4</td>
-      <td>0.2500</td>
-    </tr>
-    <tr>
-      <th>161</th>
-      <td>Scotland</td>
-      <td>16</td>
-      <td>4</td>
-      <td>0.2500</td>
-    </tr>
-    <tr>
-      <th>198</th>
-      <td>United States Virgin Islands</td>
-      <td>16</td>
-      <td>3</td>
-      <td>0.1875</td>
-    </tr>
-    <tr>
-      <th>173</th>
-      <td>South Sudan</td>
-      <td>16</td>
-      <td>3</td>
-      <td>0.1875</td>
-    </tr>
-    <tr>
-      <th>158</th>
-      <td>San Marino</td>
-      <td>16</td>
-      <td>3</td>
-      <td>0.1875</td>
-    </tr>
-    <tr>
-      <th>149</th>
-      <td>Puerto Rico</td>
+      <th>3</th>
+      <td>American Samoa</td>
       <td>16</td>
       <td>3</td>
       <td>0.1875</td>
@@ -1425,15 +1406,8 @@ else:
       <td>0.1875</td>
     </tr>
     <tr>
-      <th>3</th>
-      <td>American Samoa</td>
-      <td>16</td>
-      <td>3</td>
-      <td>0.1875</td>
-    </tr>
-    <tr>
-      <th>118</th>
-      <td>Monaco</td>
+      <th>72</th>
+      <td>Greenland</td>
       <td>16</td>
       <td>3</td>
       <td>0.1875</td>
@@ -1446,8 +1420,8 @@ else:
       <td>0.1875</td>
     </tr>
     <tr>
-      <th>72</th>
-      <td>Greenland</td>
+      <th>173</th>
+      <td>South Sudan</td>
       <td>16</td>
       <td>3</td>
       <td>0.1875</td>
@@ -1460,22 +1434,43 @@ else:
       <td>0.1875</td>
     </tr>
     <tr>
+      <th>149</th>
+      <td>Puerto Rico</td>
+      <td>16</td>
+      <td>3</td>
+      <td>0.1875</td>
+    </tr>
+    <tr>
+      <th>118</th>
+      <td>Monaco</td>
+      <td>16</td>
+      <td>3</td>
+      <td>0.1875</td>
+    </tr>
+    <tr>
+      <th>158</th>
+      <td>San Marino</td>
+      <td>16</td>
+      <td>3</td>
+      <td>0.1875</td>
+    </tr>
+    <tr>
+      <th>198</th>
+      <td>United States Virgin Islands</td>
+      <td>16</td>
+      <td>3</td>
+      <td>0.1875</td>
+    </tr>
+    <tr>
+      <th>41</th>
+      <td>Cook Islands</td>
+      <td>16</td>
+      <td>2</td>
+      <td>0.1250</td>
+    </tr>
+    <tr>
       <th>132</th>
       <td>Niue</td>
-      <td>16</td>
-      <td>2</td>
-      <td>0.1250</td>
-    </tr>
-    <tr>
-      <th>140</th>
-      <td>Palau</td>
-      <td>16</td>
-      <td>2</td>
-      <td>0.1250</td>
-    </tr>
-    <tr>
-      <th>141</th>
-      <td>Palestine</td>
       <td>16</td>
       <td>2</td>
       <td>0.1250</td>
@@ -1488,22 +1483,22 @@ else:
       <td>0.1250</td>
     </tr>
     <tr>
-      <th>41</th>
-      <td>Cook Islands</td>
+      <th>141</th>
+      <td>Palestine</td>
       <td>16</td>
       <td>2</td>
       <td>0.1250</td>
     </tr>
     <tr>
-      <th>125</th>
-      <td>Nauru</td>
+      <th>140</th>
+      <td>Palau</td>
       <td>16</td>
-      <td>1</td>
-      <td>0.0625</td>
+      <td>2</td>
+      <td>0.1250</td>
     </tr>
     <tr>
-      <th>154</th>
-      <td>Saint Kitts and Nevis</td>
+      <th>112</th>
+      <td>Marshall Islands</td>
       <td>16</td>
       <td>1</td>
       <td>0.0625</td>
@@ -1516,8 +1511,15 @@ else:
       <td>0.0625</td>
     </tr>
     <tr>
-      <th>112</th>
-      <td>Marshall Islands</td>
+      <th>125</th>
+      <td>Nauru</td>
+      <td>16</td>
+      <td>1</td>
+      <td>0.0625</td>
+    </tr>
+    <tr>
+      <th>154</th>
+      <td>Saint Kitts and Nevis</td>
       <td>16</td>
       <td>1</td>
       <td>0.0625</td>
@@ -1746,8 +1748,8 @@ else:
       <td>11.7260</td>
       <td>10.0050</td>
       <td>54.1500</td>
+      <td>8.8700</td>
       <td>15.4100</td>
-      <td>9.2300</td>
       <td>2</td>
       <td>2</td>
       <td>1.0000</td>
@@ -1765,7 +1767,7 @@ else:
       <td>10.5600</td>
       <td>37.1000</td>
       <td>10.2900</td>
-      <td>8.9900</td>
+      <td>11.4800</td>
       <td>3</td>
       <td>2</td>
       <td>1.5000</td>
@@ -1800,8 +1802,8 @@ else:
       <td>10.5975</td>
       <td>9.1550</td>
       <td>46.0400</td>
-      <td>7.0200</td>
-      <td>6.5800</td>
+      <td>16.2400</td>
+      <td>14.1100</td>
       <td>2</td>
       <td>2</td>
       <td>1.0000</td>
@@ -1818,8 +1820,8 @@ else:
       <td>4.8946</td>
       <td>3.3100</td>
       <td>25.7600</td>
-      <td>2.5200</td>
       <td>1.6800</td>
+      <td>2.5200</td>
       <td>3</td>
       <td>3</td>
       <td>1.0000</td>
@@ -1837,7 +1839,7 @@ else:
       <td>6.1150</td>
       <td>19.2900</td>
       <td>3.1300</td>
-      <td>3.0700</td>
+      <td>9.5900</td>
       <td>3</td>
       <td>2</td>
       <td>1.5000</td>
@@ -1855,7 +1857,7 @@ else:
       <td>20.0200</td>
       <td>78.2300</td>
       <td>10.7500</td>
-      <td>11.6200</td>
+      <td>10.8000</td>
       <td>3</td>
       <td>2</td>
       <td>1.5000</td>
@@ -1872,8 +1874,8 @@ else:
       <td>13.6945</td>
       <td>12.7950</td>
       <td>31.3800</td>
-      <td>10.9000</td>
-      <td>12.2900</td>
+      <td>16.5500</td>
+      <td>18.0100</td>
       <td>2</td>
       <td>2</td>
       <td>1.0000</td>
@@ -1927,7 +1929,7 @@ else:
       <td>55.0000</td>
       <td>88.5000</td>
       <td>61.6000</td>
-      <td>28.4000</td>
+      <td>57.1000</td>
       <td>5</td>
       <td>3</td>
       <td>1.6667</td>
@@ -1945,7 +1947,7 @@ else:
       <td>5.7000</td>
       <td>20.5000</td>
       <td>0.6900</td>
-      <td>12.0300</td>
+      <td>0.0190</td>
       <td>3</td>
       <td>2</td>
       <td>1.5000</td>
@@ -2298,7 +2300,7 @@ else:
       <th>1</th>
       <td>CODE</td>
       <td>AFG</td>
-      <td>PSX</td>
+      <td>ALB</td>
       <td>1</td>
       <td>1</td>
       <td>1.0000</td>
@@ -4770,42 +4772,42 @@ kmeans_clustering_kfold_summary
     <tr>
       <th>0</th>
       <td>2</td>
-      <td>0.2315</td>
+      <td>0.2285</td>
     </tr>
     <tr>
       <th>1</th>
       <td>3</td>
-      <td>0.2268</td>
+      <td>0.2181</td>
     </tr>
     <tr>
       <th>2</th>
       <td>4</td>
-      <td>0.1674</td>
+      <td>0.1503</td>
     </tr>
     <tr>
       <th>3</th>
       <td>5</td>
-      <td>0.1419</td>
+      <td>0.1445</td>
     </tr>
     <tr>
       <th>4</th>
       <td>6</td>
-      <td>0.1475</td>
+      <td>0.1454</td>
     </tr>
     <tr>
       <th>5</th>
       <td>7</td>
-      <td>0.1410</td>
+      <td>0.0993</td>
     </tr>
     <tr>
       <th>6</th>
       <td>8</td>
-      <td>0.0957</td>
+      <td>0.1181</td>
     </tr>
     <tr>
       <th>7</th>
       <td>9</td>
-      <td>0.0862</td>
+      <td>0.0887</td>
     </tr>
   </tbody>
 </table>
@@ -4908,50 +4910,50 @@ kmeans_clustering_evaluation_summary
     <tr>
       <th>0</th>
       <td>2</td>
-      <td>1238.4894</td>
-      <td>0.2355</td>
+      <td>1238.5327</td>
+      <td>0.2350</td>
     </tr>
     <tr>
       <th>1</th>
       <td>3</td>
-      <td>1027.3347</td>
-      <td>0.2330</td>
+      <td>1027.1577</td>
+      <td>0.2364</td>
     </tr>
     <tr>
       <th>2</th>
       <td>4</td>
-      <td>948.1192</td>
-      <td>0.2323</td>
+      <td>1025.1634</td>
+      <td>0.1395</td>
     </tr>
     <tr>
       <th>3</th>
       <td>5</td>
-      <td>897.3084</td>
-      <td>0.1608</td>
+      <td>871.6545</td>
+      <td>0.2034</td>
     </tr>
     <tr>
       <th>4</th>
       <td>6</td>
-      <td>821.6682</td>
-      <td>0.1576</td>
+      <td>795.0377</td>
+      <td>0.2186</td>
     </tr>
     <tr>
       <th>5</th>
       <td>7</td>
-      <td>771.4820</td>
-      <td>0.1627</td>
+      <td>775.7324</td>
+      <td>0.1693</td>
     </tr>
     <tr>
       <th>6</th>
       <td>8</td>
-      <td>725.5394</td>
-      <td>0.1633</td>
+      <td>704.8949</td>
+      <td>0.1804</td>
     </tr>
     <tr>
       <th>7</th>
       <td>9</td>
-      <td>670.6289</td>
-      <td>0.1836</td>
+      <td>710.5409</td>
+      <td>0.1596</td>
     </tr>
   </tbody>
 </table>
@@ -5318,42 +5320,42 @@ bisecting_kmeans_clustering_kfold_summary
     <tr>
       <th>0</th>
       <td>2</td>
-      <td>0.2315</td>
+      <td>0.2285</td>
     </tr>
     <tr>
       <th>1</th>
       <td>3</td>
-      <td>0.1953</td>
+      <td>0.1799</td>
     </tr>
     <tr>
       <th>2</th>
       <td>4</td>
-      <td>0.1669</td>
+      <td>0.1756</td>
     </tr>
     <tr>
       <th>3</th>
       <td>5</td>
-      <td>0.1375</td>
+      <td>0.1453</td>
     </tr>
     <tr>
       <th>4</th>
       <td>6</td>
-      <td>0.1250</td>
+      <td>0.1495</td>
     </tr>
     <tr>
       <th>5</th>
       <td>7</td>
-      <td>0.1161</td>
+      <td>0.1133</td>
     </tr>
     <tr>
       <th>6</th>
       <td>8</td>
-      <td>0.1100</td>
+      <td>0.1052</td>
     </tr>
     <tr>
       <th>7</th>
       <td>9</td>
-      <td>0.1053</td>
+      <td>0.0926</td>
     </tr>
   </tbody>
 </table>
@@ -5456,50 +5458,50 @@ bisecting_kmeans_clustering_evaluation_summary
     <tr>
       <th>0</th>
       <td>2</td>
-      <td>1238.4894</td>
-      <td>0.2355</td>
+      <td>1238.5327</td>
+      <td>0.2350</td>
     </tr>
     <tr>
       <th>1</th>
       <td>3</td>
-      <td>1080.6399</td>
-      <td>0.2146</td>
+      <td>1079.9345</td>
+      <td>0.2088</td>
     </tr>
     <tr>
       <th>2</th>
       <td>4</td>
-      <td>955.1301</td>
-      <td>0.1887</td>
+      <td>956.9095</td>
+      <td>0.1859</td>
     </tr>
     <tr>
       <th>3</th>
       <td>5</td>
-      <td>891.9650</td>
-      <td>0.1762</td>
+      <td>902.7490</td>
+      <td>0.1832</td>
     </tr>
     <tr>
       <th>4</th>
       <td>6</td>
-      <td>843.0145</td>
-      <td>0.1750</td>
+      <td>853.3242</td>
+      <td>0.1847</td>
     </tr>
     <tr>
       <th>5</th>
       <td>7</td>
-      <td>798.7791</td>
-      <td>0.1341</td>
+      <td>805.8361</td>
+      <td>0.1454</td>
     </tr>
     <tr>
       <th>6</th>
       <td>8</td>
-      <td>758.0470</td>
-      <td>0.1413</td>
+      <td>788.8381</td>
+      <td>0.1415</td>
     </tr>
     <tr>
       <th>7</th>
       <td>9</td>
-      <td>714.1712</td>
-      <td>0.1503</td>
+      <td>740.0624</td>
+      <td>0.1428</td>
     </tr>
   </tbody>
 </table>
@@ -5869,42 +5871,42 @@ gaussian_mixture_clustering_kfold_summary
     <tr>
       <th>0</th>
       <td>2</td>
-      <td>0.1289</td>
+      <td>0.1482</td>
     </tr>
     <tr>
       <th>1</th>
       <td>3</td>
-      <td>0.0730</td>
+      <td>0.0830</td>
     </tr>
     <tr>
       <th>2</th>
       <td>4</td>
-      <td>0.0814</td>
+      <td>0.0368</td>
     </tr>
     <tr>
       <th>3</th>
       <td>5</td>
-      <td>0.0451</td>
+      <td>0.0653</td>
     </tr>
     <tr>
       <th>4</th>
       <td>6</td>
-      <td>0.0644</td>
+      <td>0.0287</td>
     </tr>
     <tr>
       <th>5</th>
       <td>7</td>
-      <td>0.0631</td>
+      <td>0.0303</td>
     </tr>
     <tr>
       <th>6</th>
       <td>8</td>
-      <td>0.0353</td>
+      <td>0.0317</td>
     </tr>
     <tr>
       <th>7</th>
       <td>9</td>
-      <td>0.0144</td>
+      <td>0.0160</td>
     </tr>
   </tbody>
 </table>
@@ -6003,42 +6005,42 @@ gaussian_mixture_clustering_evaluation_summary
     <tr>
       <th>0</th>
       <td>2</td>
-      <td>0.2239</td>
+      <td>0.1422</td>
     </tr>
     <tr>
       <th>1</th>
       <td>3</td>
-      <td>0.2235</td>
+      <td>0.1959</td>
     </tr>
     <tr>
       <th>2</th>
       <td>4</td>
-      <td>0.2026</td>
+      <td>0.1061</td>
     </tr>
     <tr>
       <th>3</th>
       <td>5</td>
-      <td>0.1205</td>
+      <td>0.1168</td>
     </tr>
     <tr>
       <th>4</th>
       <td>6</td>
-      <td>0.1208</td>
+      <td>0.1336</td>
     </tr>
     <tr>
       <th>5</th>
       <td>7</td>
-      <td>0.1266</td>
+      <td>0.1308</td>
     </tr>
     <tr>
       <th>6</th>
       <td>8</td>
-      <td>0.1320</td>
+      <td>0.1266</td>
     </tr>
     <tr>
       <th>7</th>
       <td>9</td>
-      <td>0.1348</td>
+      <td>0.1338</td>
     </tr>
   </tbody>
 </table>
@@ -6161,7 +6163,7 @@ cancer_death_rate_gaussian_mixture_clustering.head()
       <td>0.8754</td>
       <td>-0.7177</td>
       <td>0.8924</td>
-      <td>0</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>2</th>
@@ -6174,7 +6176,7 @@ cancer_death_rate_gaussian_mixture_clustering.head()
       <td>-0.9625</td>
       <td>-1.0428</td>
       <td>-1.1914</td>
-      <td>0</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>3</th>
@@ -6200,7 +6202,7 @@ cancer_death_rate_gaussian_mixture_clustering.head()
       <td>-0.2718</td>
       <td>-0.5826</td>
       <td>-0.8379</td>
-      <td>1</td>
+      <td>0</td>
     </tr>
   </tbody>
 </table>
@@ -7322,17 +7324,17 @@ display(performance_comparison_silhouette_score)
     <tr>
       <th>0</th>
       <td>kmeans_clustering</td>
-      <td>0.2355</td>
+      <td>0.2350</td>
     </tr>
     <tr>
       <th>1</th>
       <td>bisecting_kmeans_clustering</td>
-      <td>0.2355</td>
+      <td>0.2350</td>
     </tr>
     <tr>
       <th>2</th>
       <td>gaussian_mixture_clustering</td>
-      <td>0.2239</td>
+      <td>0.1422</td>
     </tr>
     <tr>
       <th>3</th>
@@ -7606,27 +7608,27 @@ display(cancer_death_rate_kmeans_descriptor_clustered)
   <tbody>
     <tr>
       <th>HIGH_PAN_LUN_COL_LIV_CAN</th>
-      <td>-0.4004</td>
-      <td>-0.0894</td>
-      <td>-0.7876</td>
-      <td>-0.4930</td>
-      <td>-0.4541</td>
-      <td>0.6040</td>
-      <td>0.7054</td>
-      <td>0.6445</td>
-      <td>0.0465</td>
+      <td>-0.4007</td>
+      <td>-0.0831</td>
+      <td>-0.7966</td>
+      <td>-0.4951</td>
+      <td>-0.4531</td>
+      <td>0.6261</td>
+      <td>0.7090</td>
+      <td>0.6517</td>
+      <td>0.0372</td>
     </tr>
     <tr>
       <th>HIGH_PRO_BRE_CER_STO_ESO_CAN</th>
-      <td>0.3550</td>
-      <td>0.0793</td>
-      <td>0.6983</td>
-      <td>0.4371</td>
-      <td>0.4026</td>
-      <td>-0.5355</td>
-      <td>-0.6254</td>
-      <td>-0.5714</td>
-      <td>-0.0413</td>
+      <td>0.3475</td>
+      <td>0.0720</td>
+      <td>0.6910</td>
+      <td>0.4294</td>
+      <td>0.3930</td>
+      <td>-0.5431</td>
+      <td>-0.6150</td>
+      <td>-0.5653</td>
+      <td>-0.0322</td>
     </tr>
   </tbody>
 </table>
@@ -7778,15 +7780,15 @@ display(cancer_death_rate_kmeans_target_clustered)
   <tbody>
     <tr>
       <th>HIGH_PAN_LUN_COL_LIV_CAN</th>
-      <td>0.6433</td>
-      <td>0.4329</td>
-      <td>0.3218</td>
+      <td>0.6337</td>
+      <td>0.4565</td>
+      <td>0.3360</td>
     </tr>
     <tr>
       <th>HIGH_PRO_BRE_CER_STO_ESO_CAN</th>
-      <td>-0.5704</td>
-      <td>-0.3838</td>
-      <td>-0.2853</td>
+      <td>-0.5496</td>
+      <td>-0.3959</td>
+      <td>-0.2914</td>
     </tr>
   </tbody>
 </table>
@@ -7887,7 +7889,7 @@ cancer_death_rate_kmeans_cluster_map.head()
 ##################################
 # Loading the globalmap shape file 
 ##################################
-world = gpd.read_file('custom.geo.json')
+world = gpd.read_file(os.path.join("..", REFERENCES_PATH, "custom.geo.json"))
 ```
 
 
@@ -8388,17 +8390,19 @@ plt.show()
 * Applying dimensionality reduction techniques such as PCA, t-SNE, or UMAP before visualization to reduce the data to a manageable number of dimensions.
 
 
-![CaseStudy4_Summary_1.png](attachment:abc7747a-95c7-4b82-ba63-45fa4e926f65.png)
+![CaseStudy4_Summary_0.png](cffb7edc-238f-4ff0-85ea-f28e86ea413a.png)
 
-![CaseStudy4_Summary_2.png](attachment:b0b321a9-a249-4f3d-92b9-2cf2753ac907.png)
+![CaseStudy4_Summary_1.png](f7d13903-2ee5-40f6-991b-8c582e4f14c4.png)
 
-![CaseStudy4_Summary_3.png](attachment:076a5183-0afb-4042-889b-8eab8cfb00a1.png)
+![CaseStudy4_Summary_2.png](e1e70174-1a4f-4862-afb6-5c1f041369ea.png)
 
-![CaseStudy4_Summary_4.png](attachment:29070c07-e71a-4e86-adfc-47af11ce9b3c.png)
+![CaseStudy4_Summary_3.png](ccb7298f-a64d-47c1-a698-c452adb75649.png)
 
-![CaseStudy4_Summary_5.png](attachment:eff8e8e5-6491-41d9-8c37-ae94eb91e49f.png)
+![CaseStudy4_Summary_4.png](b3a552c5-a434-4ab8-83ac-b33ab072f346.png)
 
-![CaseStudy4_Summary_6.png](attachment:6b7775f7-0380-42c6-9f66-19b11849c402.png)
+![CaseStudy4_Summary_5.png](f437256a-fc65-433f-867c-05c6bcdf7cac.png)
+
+![CaseStudy4_Summary_6.png](342585e4-dae4-4bfc-9f93-65d563e36359.png)
 
 # 3. References <a class="anchor" id="References"></a>
 * **[Book]** [Data Preparation for Machine Learning: Data Cleaning, Feature Selection, and Data Transforms in Python](https://machinelearningmastery.com/data-preparation-for-machine-learning/) by Jason Brownlee
